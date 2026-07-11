@@ -31,6 +31,11 @@ public class AppSettings
     public bool WatchSystemScreenshots { get; set; }
     public PixelRect? LastRegion { get; set; }
 
+    // -- Editor window memory (DIPs; 0 = never opened, use size-to-capture) ------
+    public double EditorWidth { get; set; }
+    public double EditorHeight { get; set; }
+    public bool EditorMaximized { get; set; }
+
     // -- Editor defaults --------------------------------------------------------
     public string DefaultColor { get; set; } = "#FF3366";
     public double ArrowWidth { get; set; } = 20;
@@ -53,6 +58,9 @@ public static class SettingsStore
 
     private static string FilePath => Path.Combine(Dir, "settings.json");
 
+    /// <summary>True when Load() found no settings file — i.e. a fresh install.</summary>
+    public static bool FirstRun { get; private set; }
+
     private static readonly JsonSerializerOptions Options = new()
     {
         WriteIndented = true,
@@ -67,6 +75,7 @@ public static class SettingsStore
                 return JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(FilePath), Options) ?? new();
         }
         catch { /* corrupted settings: fall back to defaults */ }
+        FirstRun = true;
         return new AppSettings();
     }
 

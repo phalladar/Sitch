@@ -50,7 +50,9 @@ escape (cancel drag → deselect → close overlay).
 
 ## 3. Editor window
 
-- Opens **sized to the capture at 100% zoom** when it fits on screen, on the active display (v1.4.0).
+- First-ever editor opens **sized to the capture at 100% zoom** when it fits on screen, on the
+  active display (v1.4.0). Thereafter the editor **remembers the last closed window size**
+  (Windows convention — deliberate deviation) and shows the capture at 100% if it fits, else fit-zoom.
 - **Top bar** (contextual per tool): `[📷 New Capture]` button · active tool icon + name in pink ·
   tool options (see §5).
 - **Left tool rail**, exact order (14): **1 Select, 2 Arrow, 3 Text (Aa), 4 Rectangle, 5 Ellipse,

@@ -124,8 +124,21 @@ public partial class EditorWindow : Window
         _dpi = VisualTreeHelper.GetDpi(this).DpiScaleX;
         Canvas.SetDpi(_dpi);
 
-        // v1.4.0 parity: open sized to the capture at 100% when it fits on that display.
         var (waW, waH) = WorkAreaDip();
+
+        // Returning users get the window size they last closed with (Windows convention);
+        // the capture scales to fit inside it — or shows at 100% if it fits.
+        if (App.Settings.EditorWidth >= MinWidth && App.Settings.EditorHeight >= MinHeight)
+        {
+            Width = Math.Min(App.Settings.EditorWidth, waW * 0.98);
+            Height = Math.Min(App.Settings.EditorHeight, waH * 0.98);
+            if (App.Settings.EditorMaximized) WindowState = WindowState.Maximized;
+            ClampToWorkArea();
+            Dispatcher.BeginInvoke(ChooseZoomForViewport, System.Windows.Threading.DispatcherPriority.Loaded);
+            return;
+        }
+
+        // First-ever editor: open sized to the capture at 100% when it fits (v1.4.0 parity).
         double chromeW = 46 + 40, chromeH = 44 + 40 + 42 + 36; // rail + margins, bars + titlebar
         double docW = _doc.ViewRect.Width / _dpi, docH = _doc.ViewRect.Height / _dpi;
         if (docW + chromeW < waW * 0.95 && docH + chromeH < waH * 0.95)
@@ -142,6 +155,17 @@ public partial class EditorWindow : Window
             ClampToWorkArea();
             Dispatcher.BeginInvoke(FitZoom, System.Windows.Threading.DispatcherPriority.Loaded);
         }
+    }
+
+    /// <summary>Within a remembered window: 100% when the capture fits, otherwise zoom-to-fit.</summary>
+    private void ChooseZoomForViewport()
+    {
+        UpdateLayout();
+        var v = _doc.ViewRect;
+        double availW = Math.Max(80, Scroller.ViewportWidth - CanvasHost.Margin.Left - CanvasHost.Margin.Right) * _dpi;
+        double availH = Math.Max(80, Scroller.ViewportHeight - CanvasHost.Margin.Top - CanvasHost.Margin.Bottom) * _dpi;
+        if (v.Width <= availW && v.Height <= availH) Canvas.SetZoom(1.0);
+        else FitZoom();
     }
 
     /// <summary>The relevant display's work area in this window's DIP units.</summary>
@@ -1257,9 +1281,33 @@ public partial class EditorWindow : Window
 
     private void OnClosingPrompt(object? sender, System.ComponentModel.CancelEventArgs e)
     {
-        if (_closeConfirmed) return;
-        if (!ConfirmClose()) { e.Cancel = true; return; }
-        _closeConfirmed = true;
+        if (!_closeConfirmed)
+        {
+            if (!ConfirmClose()) { e.Cancel = true; return; }
+            _closeConfirmed = true;
+        }
+        RememberWindowSize();
+    }
+
+    /// <summary>The next editor opens with the dimensions this one closes with.</summary>
+    private void RememberWindowSize()
+    {
+        if (WindowState == WindowState.Maximized)
+        {
+            App.Settings.EditorMaximized = true;
+            if (RestoreBounds.Width >= MinWidth && RestoreBounds.Height >= MinHeight)
+            {
+                App.Settings.EditorWidth = RestoreBounds.Width;
+                App.Settings.EditorHeight = RestoreBounds.Height;
+            }
+        }
+        else if (WindowState == WindowState.Normal && ActualWidth >= MinWidth && ActualHeight >= MinHeight)
+        {
+            App.Settings.EditorMaximized = false;
+            App.Settings.EditorWidth = ActualWidth;
+            App.Settings.EditorHeight = ActualHeight;
+        }
+        SettingsStore.Save(App.Settings);
     }
 
     /// <summary>Close after the caller already ran ConfirmClose (avoids double prompts on Quit).</summary>

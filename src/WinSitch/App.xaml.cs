@@ -62,6 +62,14 @@ public partial class App : Application
         UpdateScreenshotWatcher();
 
         HandleArgs(e.Args);
+
+        // Fresh install launched with no task: without this, the only sign of life is a tray
+        // icon that Windows 11 hides in the overflow flyout — i.e., nothing visible at all.
+        if (SettingsStore.FirstRun && e.Args.Length == 0)
+        {
+            SettingsStore.Save(Settings); // materialize settings so the welcome shows once
+            new WelcomeWindow().Show();
+        }
     }
 
     protected override void OnExit(ExitEventArgs e)
@@ -280,6 +288,9 @@ public partial class App : Application
     {
         foreach (Window w in Windows)
             if (w is EditorWindow) { w.Activate(); return; }
+        // Someone launched the exe again with nothing to show — say so instead of doing
+        // nothing (the classic "I double-clicked it and nothing happened").
+        NotifyPopup.Show($"WinSitch is already running in the system tray.\nPress {Settings.CaptureHotkey} to capture.");
     }
 
     public void UpdateScreenshotWatcher()
