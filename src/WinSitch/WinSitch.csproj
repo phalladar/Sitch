@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>WinSitch</RootNamespace>
+    <AssemblyName>WinSitch</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\winsitch.ico</ApplicationIcon>
+    <Version>0.1.0</Version>
+    <Authors>Josh Auriemma</Authors>
+    <Product>WinSitch</Product>
+    <Description>Skitch-style screenshot annotation for Windows. Capture, annotate, share.</Description>
+    <Copyright>© 2026 Josh Auriemma. MIT License.</Copyright>
+    <!-- Single-file standalone publish: dotnet publish -c Release -r win-x64 -->
+    <PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
+    <SelfContained Condition="'$(RuntimeIdentifier)' != ''">true</SelfContained>
+    <PublishReadyToRun Condition="'$(Configuration)' == 'Release'">true</PublishReadyToRun>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="H.NotifyIcon.Wpf" Version="2.3.0" />
+    <PackageReference Include="PDFsharp-wpf" Version="6.2.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\winsitch.ico" />
+  </ItemGroup>
+
+</Project>

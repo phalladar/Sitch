@@ -1,0 +1,20 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Sampled from iSkitch's dark UI (docs/reference) -->
+    <SolidColorBrush x:Key="Brush.Bar" Color="#1E1E1E"/>
+    <SolidColorBrush x:Key="Brush.Title" Color="#2C2D2E"/>
+    <SolidColorBrush x:Key="Brush.Canvas" Color="#282828"/>
+    <SolidColorBrush x:Key="Brush.Window" Color="#232325"/>
+    <SolidColorBrush x:Key="Brush.Divider" Color="#3A3A3C"/>
+    <SolidColorBrush x:Key="Brush.Text" Color="#F0F0F0"/>
+    <SolidColorBrush x:Key="Brush.TextDim" Color="#98989E"/>
+    <SolidColorBrush x:Key="Brush.Glyph" Color="#C9C9CE"/>
+    <SolidColorBrush x:Key="Brush.TileSel" Color="#45242B"/>
+    <SolidColorBrush x:Key="Brush.Accent" Color="#FF3366"/>
+    <SolidColorBrush x:Key="Brush.Primary" Color="#007AFF"/>
+    <SolidColorBrush x:Key="Brush.Field" Color="#2C2D2E"/>
+    <SolidColorBrush x:Key="Brush.FieldBorder" Color="#48484C"/>
+    <SolidColorBrush x:Key="Brush.Hover" Color="#22FFFFFF"/>
+    <SolidColorBrush x:Key="Brush.Pressed" Color="#33FFFFFF"/>
+    <SolidColorBrush x:Key="Brush.Ghost" Color="#2F2F31"/>
+</ResourceDictionary>

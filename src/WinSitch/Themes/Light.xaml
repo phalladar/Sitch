@@ -1,0 +1,19 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="Brush.Bar" Color="#FAFAFC"/>
+    <SolidColorBrush x:Key="Brush.Title" Color="#F0F0F4"/>
+    <SolidColorBrush x:Key="Brush.Canvas" Color="#E4E4E8"/>
+    <SolidColorBrush x:Key="Brush.Window" Color="#FAFAFC"/>
+    <SolidColorBrush x:Key="Brush.Divider" Color="#DCDCE1"/>
+    <SolidColorBrush x:Key="Brush.Text" Color="#1D1D1F"/>
+    <SolidColorBrush x:Key="Brush.TextDim" Color="#77777D"/>
+    <SolidColorBrush x:Key="Brush.Glyph" Color="#4A4A50"/>
+    <SolidColorBrush x:Key="Brush.TileSel" Color="#FFE4EC"/>
+    <SolidColorBrush x:Key="Brush.Accent" Color="#FF3366"/>
+    <SolidColorBrush x:Key="Brush.Primary" Color="#007AFF"/>
+    <SolidColorBrush x:Key="Brush.Field" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="Brush.FieldBorder" Color="#C8C8CE"/>
+    <SolidColorBrush x:Key="Brush.Hover" Color="#14000000"/>
+    <SolidColorBrush x:Key="Brush.Pressed" Color="#22000000"/>
+    <SolidColorBrush x:Key="Brush.Ghost" Color="#E6E6EA"/>
+</ResourceDictionary>
