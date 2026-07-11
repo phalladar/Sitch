@@ -12,6 +12,10 @@ with the iconic tapered arrow, and share it — in seconds, offline, for free.
 [![.NET 10 WPF](https://img.shields.io/badge/.NET%2010-WPF-512bd4)](#building-from-source)
 [![Single-file exe](https://img.shields.io/badge/standalone-single%20exe-28a745)](#download)
 
+### [⬇️ Download WinSitch.exe](https://github.com/phalladar/winsitch/releases/latest/download/WinSitch.exe)
+
+One standalone file. No installer, no .NET to install — download and run.
+
 *Capture. Annotate. Share.* — [Screenshots ↓](#screenshots)
 
 </div>
@@ -46,7 +50,8 @@ loved about Skitch:
 - Freeze-frame picker with live size readout — correct on multi-monitor, mixed-DPI setups
 - Window picker that captures clean window content even when partially covered
 - Capture timer (3/5/10 s), quick capture straight to clipboard or file
-- Configurable after-capture actions: show editor / copy / save, in any combination
+- **Every capture is copied to the clipboard automatically** (on by default) — paste into chat
+  before you've even annotated; configurable after-capture actions: show editor / copy / save
 - Optional watcher that opens the editor after a system `Win+PrtScn` screenshot
 
 **Annotate — 14 tools**
@@ -70,8 +75,10 @@ non-destructive Crop with aspect-ratio presets
 
 ## Download
 
-Grab `WinSitch.exe` from [Releases](../../releases) — a single self-contained ~86 MB file
-(the .NET runtime is baked in). Run it; it lives in your system tray. That's the whole install.
+**[⬇️ Download WinSitch.exe](https://github.com/phalladar/winsitch/releases/latest/download/WinSitch.exe)**
+(also on the [Releases page](https://github.com/phalladar/winsitch/releases)) — a single
+self-contained ~86 MB file with the .NET runtime baked in. Run it; it lives in your system tray.
+That's the whole install. Delete the file to uninstall.
 
 > Windows SmartScreen may warn on first run (the build is currently unsigned). Choose
 > *More info → Run anyway*, or build it from source below.
@@ -79,7 +86,7 @@ Grab `WinSitch.exe` from [Releases](../../releases) — a single self-contained 
 ## Building from source
 
 ```powershell
-git clone https://github.com/jauriemma/winsitch
+git clone https://github.com/phalladar/winsitch
 cd winsitch
 dotnet publish src/WinSitch/WinSitch.csproj -c Release -r win-x64 -o publish
 # → publish/WinSitch.exe  (self-contained single file)

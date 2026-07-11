@@ -23,7 +23,8 @@ public class AppSettings
     /// <summary>"png" | "jpg" | "pdf" | "tiff"</summary>
     public string DefaultFormat { get; set; } = "png";
     public bool AfterShowEditor { get; set; } = true;
-    public bool AfterCopy { get; set; }
+    /// <summary>Every capture lands on the clipboard immediately, ready to paste (on by default).</summary>
+    public bool AfterCopy { get; set; } = true;
     public bool AfterSave { get; set; }
     /// <summary>0 = off; 3, 5 or 10 seconds.</summary>
     public int TimerSeconds { get; set; }

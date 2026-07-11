@@ -38,7 +38,7 @@ version-history JSON, and Skitch-heritage research. Anything the original never 
 | Recapture last region | Repeat exact same region without selecting again (iSkitch: ⇧⌥⌘4 → **`Ctrl+Alt+Shift+4`**). |
 | Capture timer | 3 / 5 / 10 s countdown before the shot (v1.3.0). |
 | Quick capture | Region or full screen straight to **clipboard or file**, skipping the editor (v1.3.0). |
-| After-capture actions | Configurable, "Shottr-style", any combination of: **Show editor / Copy to clipboard / Save to file**. Default: just show the editor (v1.2.0). |
+| After-capture actions | Configurable, "Shottr-style", any combination of: **Show editor / Copy to clipboard / Save to file**. Default: show editor **+ copy to clipboard** (deliberate deviation from iSkitch's editor-only default — paste-ready immediately). |
 | System-screenshot watcher | "Open the editor automatically after a system screenshot" — watches where the OS saves screenshots (v1.2.0). Windows analog: watch `%USERPROFILE%\Pictures\Screenshots` (Win+PrtScn) — **[adapted]**, off by default. |
 | Multi-display | Region/window capture on any display; editor opens on the display you're working on (v1.4.0; full any-display capture is v1.5.0 parity). |
 | Open existing images | Drop an image onto the tray/Dock icon or "Open with WinSitch" from Explorer → opens straight in the editor. |
