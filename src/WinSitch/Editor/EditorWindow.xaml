@@ -21,17 +21,33 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="44"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
+        <!-- ======================= TAB STRIP (shown only with 2+ captures) ======================= -->
+        <Border x:Name="TabStripHost" Grid.Row="0" Visibility="Collapsed"
+                Background="{DynamicResource Brush.Bar}"
+                BorderBrush="{DynamicResource Brush.Divider}" BorderThickness="0,0,0,1">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
+                          Focusable="False">
+                <StackPanel x:Name="TabStrip" Orientation="Horizontal" Margin="6,5,6,0"/>
+            </ScrollViewer>
+        </Border>
+
         <!-- ======================= TOP BAR ======================= -->
-        <Border Grid.Row="0" Background="{DynamicResource Brush.Bar}"
+        <Border Grid.Row="1" Background="{DynamicResource Brush.Bar}"
                 BorderBrush="{DynamicResource Brush.Divider}" BorderThickness="0,0,0,1">
             <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
                 <!-- Normal tool options bar -->
-                <StackPanel x:Name="NormalBar" Orientation="Horizontal" Margin="10,0">
+                <StackPanel x:Name="NormalBar" Grid.Column="0" ClipToBounds="True" Orientation="Horizontal" Margin="10,0">
                     <Button x:Name="BtnNewCapture" Style="{StaticResource IconButton}" ToolTip="New Capture (region)">
                         <StackPanel Orientation="Horizontal">
                             <Path Data="M7,4 L8.5,2 H11.5 L13,4 H16 A1.5,1.5 0 0 1 17.5,5.5 V14.5 A1.5,1.5 0 0 1 16,16 H4 A1.5,1.5 0 0 1 2.5,14.5 V5.5 A1.5,1.5 0 0 1 4,4 Z M10,6.8 A3.4,3.4 0 1 1 9.99,6.8"
@@ -125,7 +141,7 @@
                 </StackPanel>
 
                 <!-- Crop takeover bar -->
-                <Grid x:Name="CropBar" Visibility="Collapsed" Margin="10,0">
+                <Grid x:Name="CropBar" Grid.Column="0" Visibility="Collapsed" Margin="10,0">
                     <StackPanel Orientation="Horizontal">
                         <ContentControl VerticalAlignment="Center" Foreground="{DynamicResource Brush.Accent}"
                                         x:Name="CropIconHost" IsTabStop="False"/>
@@ -149,11 +165,21 @@
                         <Button x:Name="CropApply" Style="{StaticResource PrimaryButton}" Content="Apply"/>
                     </StackPanel>
                 </Grid>
+
+                <!-- Settings — always reachable from the toolbar; hidden during the crop takeover -->
+                <StackPanel x:Name="SettingsHost" Grid.Column="1" Orientation="Horizontal"
+                            VerticalAlignment="Center" Margin="0,0,10,0">
+                    <Rectangle Style="{StaticResource Divider}"/>
+                    <Button x:Name="BtnSettings" Style="{StaticResource IconButton}" ToolTip="Settings">
+                        <Path Data="F0 M18.25,7.94 L18.25,12.06 L15.54,12.3 L17.29,14.38 L14.38,17.29 L12.3,15.54 L12.06,18.25 L7.94,18.25 L7.7,15.54 L5.62,17.29 L2.71,14.38 L4.46,12.3 L1.75,12.06 L1.75,7.94 L4.46,7.7 L2.71,5.62 L5.62,2.71 L7.7,4.46 L7.94,1.75 L12.06,1.75 L12.3,4.46 L14.38,2.71 L17.29,5.62 L15.54,7.7 Z M10,7.4 A2.6,2.6 0 1 1 9.99,7.4 Z"
+                              Fill="{DynamicResource Brush.Glyph}" Width="20" Height="20" Stretch="None"/>
+                    </Button>
+                </StackPanel>
             </Grid>
         </Border>
 
         <!-- ======================= BODY ======================= -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="46"/>
                 <ColumnDefinition Width="*"/>
@@ -199,7 +225,7 @@
         </Grid>
 
         <!-- ======================= BOTTOM BAR ======================= -->
-        <Border Grid.Row="2" Background="{DynamicResource Brush.Bar}"
+        <Border Grid.Row="3" Background="{DynamicResource Brush.Bar}"
                 BorderBrush="{DynamicResource Brush.Divider}" BorderThickness="0,1,0,0">
             <Grid Margin="10,0">
                 <StackPanel Orientation="Horizontal">

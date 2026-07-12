@@ -88,7 +88,7 @@ public sealed class TrayController : IDisposable
     private static void ShowAbout()
     {
         MessageBox.Show(
-            "WinSitch 0.1.1\n\nSkitch-style screenshot annotation for Windows.\nCapture. Annotate. Share.\n\n" +
+            "WinSitch 0.1.2\n\nSkitch-style screenshot annotation for Windows.\nCapture. Annotate. Share.\n\n" +
             "MIT License — © 2026 Josh Auriemma\ngithub.com/phalladar/winsitch",
             "About WinSitch", MessageBoxButton.OK, MessageBoxImage.Information);
     }

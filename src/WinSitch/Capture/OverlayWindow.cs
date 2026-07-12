@@ -33,6 +33,7 @@ public sealed class OverlayWindow : Window
         ResizeMode = ResizeMode.NoResize;
         ShowInTaskbar = false;
         ShowActivated = activate;
+        Focusable = true; // the activated overlay must catch Esc / arrows / Enter
         Topmost = true;
         Background = Brushes.Black;
         Cursor = controller.Mode == CaptureMode.Region ? Cursors.Cross : Cursors.Arrow;
@@ -54,6 +55,13 @@ public sealed class OverlayWindow : Window
         Native.SetWindowPos(hwnd, Native.HWND_TOPMOST,
             _monitor.Bounds.X, _monitor.Bounds.Y, _monitor.Bounds.Width, _monitor.Bounds.Height,
             ShowActivated ? Native.SWP_SHOWWINDOW : Native.SWP_SHOWWINDOW | Native.SWP_NOACTIVATE);
+
+        // Give the overlay under the cursor real keyboard focus so a plain Esc cancels the capture.
+        if (ShowActivated)
+        {
+            Activate();
+            Keyboard.Focus(this);
+        }
 
         if (PresentationSource.FromVisual(this)?.CompositionTarget is { } ct)
             _scale = ct.TransformToDevice.M11;
@@ -123,7 +131,8 @@ public sealed class OverlayWindow : Window
         switch (e.Key)
         {
             case Key.Escape:
-                _controller.CancelStaged();
+                // A single Escape always abandons the whole capture — nothing is captured.
+                _controller.Cancel();
                 e.Handled = true;
                 break;
             case Key.Enter:

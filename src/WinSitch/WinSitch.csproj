@@ -11,7 +11,7 @@
     <AssemblyName>WinSitch</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\winsitch.ico</ApplicationIcon>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <Authors>Josh Auriemma</Authors>
     <Product>WinSitch</Product>
     <Description>Skitch-style screenshot annotation for Windows. Capture, annotate, share.</Description>

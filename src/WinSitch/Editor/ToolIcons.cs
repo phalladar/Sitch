@@ -18,7 +18,7 @@ public static class ToolIcons
     public static FrameworkElement Create(ToolKind kind) => kind switch
     {
         ToolKind.Select => Fill("M5,2 L16,10.2 L10.6,11.3 L13.4,17.2 L11.1,18.3 L8.4,12.4 L5,15.6 Z"),
-        ToolKind.Arrow => Fill("M4,16 L11.5,8.5 L10,7 L16,4 L13,10 L11.5,8.5 M4,16 L10,7 L13,10 L4,16 Z"),
+        ToolKind.Arrow => Fill("M3.6,14.6 L11.2,7 L9.6,5.3 L16,4 L14.7,10.4 L13,8.8 L5.4,16.4 Z"),
         ToolKind.Text => Text("Aa"),
         ToolKind.Rectangle => Stroke("M4.5,5.5 H15.5 V14.5 H4.5 Z"),
         ToolKind.Ellipse => Stroke("M10,4.5 A5.5,5 0 1 1 9.99,4.5 Z"),

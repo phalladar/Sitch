@@ -144,6 +144,12 @@ public partial class App : Application
     public void CaptureRegion() => StartCapture(CaptureMode.Region);
     public void CaptureWindow() => StartCapture(CaptureMode.Window);
 
+    /// <summary>Region capture whose result lands as a new tab inside an existing editor window.</summary>
+    public void CaptureRegionInto(EditorWindow editor)
+    {
+        RunWithTimer(() => _capture!.StartInteractive(CaptureMode.Region, r => RouteCapture(r, editor)));
+    }
+
     public void CaptureFullScreen(int monitorIndex)
     {
         RunWithTimer(() =>
@@ -195,7 +201,7 @@ public partial class App : Application
 
     private void StartCapture(CaptureMode mode)
     {
-        RunWithTimer(() => _capture!.StartInteractive(mode, RouteCapture));
+        RunWithTimer(() => _capture!.StartInteractive(mode, result => RouteCapture(result)));
     }
 
     private void RunWithTimer(Action action)
@@ -207,8 +213,12 @@ public partial class App : Application
             action();
     }
 
-    /// <summary>Applies the configured after-capture actions (show / copy / save, any combo).</summary>
-    private void RouteCapture(CaptureResult result)
+    /// <summary>
+    /// Applies the configured after-capture actions (show / copy / save, any combo).
+    /// When <paramref name="into"/> is set (the editor's own New Capture button), the frame always
+    /// opens as a new tab in that window instead of spawning a separate one.
+    /// </summary>
+    private void RouteCapture(CaptureResult result, EditorWindow? into = null)
     {
         RememberRegion(result);
         bool any = false;
@@ -230,7 +240,9 @@ public partial class App : Application
             NotifyPopup.Show($"Saved {Path.GetFileName(path)}", result.Bitmap);
             any = true;
         }
-        if (Settings.AfterShowEditor || !any)
+        if (into is not null)
+            into.AddCaptureTab(result.Bitmap, "Untitled");
+        else if (Settings.AfterShowEditor || !any)
             OpenEditor(result.Bitmap, "Untitled", result.SourceScreenRect);
     }
 
@@ -306,7 +318,7 @@ public partial class App : Application
         {
             if (w is EditorWindow ed)
             {
-                if (!ed.ConfirmClose()) return;
+                if (!ed.ConfirmCloseWindow()) return;
                 ed.CloseWithoutPrompt();
             }
             else

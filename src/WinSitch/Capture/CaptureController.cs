@@ -130,20 +130,6 @@ public sealed class CaptureController
         CompleteRegion(rect);
     }
 
-    /// <summary>Esc stages: cancel drag → drop keyboard selection → close the overlay.</summary>
-    internal void CancelStaged()
-    {
-        if (Dragging) { CancelDrag(); return; }
-        if (HasKeyboardSelection) { HasKeyboardSelection = false; Repaint(); return; }
-        Cancel();
-    }
-
-    internal void CancelDrag()
-    {
-        Dragging = false;
-        Repaint();
-    }
-
     /// <summary>Arrow-key capture: create/move (plain) or resize (Shift) the selection, 1px steps.</summary>
     internal void NudgeSelection(int dx, int dy, bool resize)
     {

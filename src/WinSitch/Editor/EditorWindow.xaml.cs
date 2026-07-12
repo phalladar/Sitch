@@ -16,8 +16,21 @@ namespace WinSitch.Editor;
 
 public partial class EditorWindow : Window
 {
-    private readonly Document _doc;
-    private readonly string _docName;
+    /// <summary>One open capture. The window edits several; only <see cref="_active"/> is shown at a time.</summary>
+    private sealed class DocTab
+    {
+        public required Document Doc;
+        public required string Name;
+        public double SavedZoom = 1.0;
+        public bool ZoomInitialized;
+    }
+
+    private readonly List<DocTab> _tabs = new();
+    private DocTab _active = null!;
+
+    // Always the active tab's document/name — almost all editor code operates on "the current doc".
+    private Document _doc = null!;
+    private string _docName = "Untitled";
     private readonly MonitorData? _targetMonitor;
     private IntPtr _hwnd;
     private double _dpi = 1.0;
@@ -59,7 +72,6 @@ public partial class EditorWindow : Window
     public EditorWindow(BitmapSource bitmap, string title, PixelRect? sourceRect = null)
     {
         InitializeComponent();
-        _docName = string.IsNullOrWhiteSpace(title) ? "Untitled" : title;
 
         // v1.4.0 parity: open on the display the capture came from.
         if (sourceRect is { } src)
@@ -69,20 +81,16 @@ public partial class EditorWindow : Window
                 cx >= m.Bounds.X && cx < m.Bounds.X + m.Bounds.Width &&
                 cy >= m.Bounds.Y && cy < m.Bounds.Y + m.Bounds.Height);
         }
-        Title = $"{_docName} — WinSitch";
         ShowInTaskbar = App.Settings.ShowInTaskbar;
         Icon = new BitmapImage(new Uri("pack://application:,,,/Assets/winsitch.ico"));
 
-        _doc = new Document(bitmap);
         _color = ParseColor(App.Settings.DefaultColor, "#FF3366");
         _fontFamily = App.Settings.FontFamily;
         _fontSize = App.Settings.TextSize;
         _obscureStyle = Enum.TryParse<ObscureStyle>(App.Settings.ObscureStyle, out var os) ? os : ObscureStyle.Pixelate;
         _saveFormat = Exporters.Formats.Contains(App.Settings.DefaultFormat) ? App.Settings.DefaultFormat : "png";
 
-        Canvas.Doc = _doc;
         Canvas.Owner = this;
-        _doc.Changed += OnDocChanged;
         Canvas.SelectionChanged += OnSelectionChanged;
         Canvas.CropDraftChanged += SyncCropFieldsFromDraft;
 
@@ -109,8 +117,177 @@ public partial class EditorWindow : Window
             CleanupTempFiles();
         };
         PreviewKeyDown += OnPreviewKey;
-        UpdateBottom();
+
+        // The first capture becomes the first (and initially only) tab.
+        AddDocument(bitmap, title);
     }
+
+    // ============================ tabs ==========================================
+
+    /// <summary>Add a capture as a new tab and switch to it (used by the in-editor New Capture button).</summary>
+    public void AddCaptureTab(BitmapSource bitmap, string name)
+    {
+        AddDocument(bitmap, name);
+        if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
+        Activate();
+    }
+
+    private void AddDocument(BitmapSource bitmap, string name)
+    {
+        var tab = new DocTab
+        {
+            Doc = new Document(bitmap),
+            Name = string.IsNullOrWhiteSpace(name) ? "Untitled" : name,
+        };
+        _tabs.Add(tab);
+        SwitchToTab(tab);
+        RebuildTabStrip();
+    }
+
+    private void SwitchToTab(DocTab tab)
+    {
+        if (ReferenceEquals(_active, tab)) return;
+
+        // Leave the current tab cleanly (commit any in-flight edit, drop transient state).
+        if (_active is not null)
+        {
+            CommitTextEdit();
+            if (Canvas.CropMode) ExitCrop(apply: false);
+            Canvas.Select(null);
+            _active.SavedZoom = Canvas.Zoom;
+            _active.Doc.Changed -= OnDocChanged;
+        }
+
+        _active = tab;
+        _doc = tab.Doc;
+        _docName = tab.Name;
+        _doc.Changed += OnDocChanged;
+        Canvas.Doc = _doc;
+        Title = $"{_docName} — WinSitch";
+
+        // First tab is sized by OnSourceInit; later tabs fit-to-view (or 100%) the first time shown.
+        if (_hwnd != IntPtr.Zero)
+        {
+            if (tab.ZoomInitialized) Canvas.SetZoom(tab.SavedZoom);
+            else
+            {
+                tab.ZoomInitialized = true;
+                Dispatcher.BeginInvoke(ChooseZoomForViewport, System.Windows.Threading.DispatcherPriority.Loaded);
+            }
+        }
+
+        Canvas.InvalidateMeasure();
+        Canvas.InvalidateVisual();
+        UpdateBottom();
+        RebuildTabStrip();
+    }
+
+    private void CloseTab(DocTab tab)
+    {
+        // Last tab: closing it closes the window (the window Closing handler runs the save prompt).
+        if (_tabs.Count == 1) { Close(); return; }
+
+        bool dirty = tab.Doc.Dirty && !IsPristine(tab.Doc);
+        // Bring a dirty tab forward so any save dialog shows exactly what's being discarded.
+        if (dirty && !ReferenceEquals(tab, _active)) SwitchToTab(tab);
+
+        if (ReferenceEquals(tab, _active))
+        {
+            if (!ConfirmClose()) return;
+            int idx = _tabs.IndexOf(tab);
+            var next = _tabs[idx == _tabs.Count - 1 ? idx - 1 : idx + 1];
+            SwitchToTab(next);   // cleanly detaches `tab`
+        }
+        _tabs.Remove(tab);
+        tab.Doc.Changed -= OnDocChanged; // harmless no-op if already detached
+        RebuildTabStrip();
+    }
+
+    private void RebuildTabStrip()
+    {
+        TabStrip.Children.Clear();
+        // A single capture looks exactly like it always did — no tab chrome.
+        TabStripHost.Visibility = _tabs.Count > 1 ? Visibility.Visible : Visibility.Collapsed;
+        if (_tabs.Count <= 1) return;
+
+        foreach (var tab in _tabs)
+            TabStrip.Children.Add(BuildTabChip(tab));
+    }
+
+    private FrameworkElement BuildTabChip(DocTab tab)
+    {
+        bool active = ReferenceEquals(tab, _active);
+
+        var label = new TextBlock
+        {
+            Text = TabLabel(tab),
+            MaxWidth = 150,
+            TextTrimming = TextTrimming.CharacterEllipsis,
+            VerticalAlignment = VerticalAlignment.Center,
+            Foreground = (Brush)FindResource(active ? "Brush.Text" : "Brush.TextDim"),
+            FontWeight = active ? FontWeights.SemiBold : FontWeights.Normal,
+        };
+
+        var close = new Button
+        {
+            Style = (Style)FindResource("IconButton"),
+            Padding = new Thickness(3),
+            Margin = new Thickness(6, 0, -3, 0),
+            ToolTip = "Close tab",
+            Content = new System.Windows.Shapes.Path
+            {
+                Data = Geometry.Parse("M4,4 L12,12 M12,4 L4,12"),
+                Stroke = (Brush)FindResource("Brush.Glyph"),
+                StrokeThickness = 1.5,
+                Width = 16, Height = 16, Stretch = Stretch.None,
+                StrokeStartLineCap = PenLineCap.Round, StrokeEndLineCap = PenLineCap.Round,
+            },
+        };
+        close.Click += (_, _) => CloseTab(tab);
+
+        var row = new StackPanel { Orientation = Orientation.Horizontal };
+        row.Children.Add(label);
+        row.Children.Add(close);
+
+        var chip = new Border
+        {
+            Child = row,
+            CornerRadius = new CornerRadius(7, 7, 0, 0),
+            Padding = new Thickness(11, 5, 7, 6),
+            Margin = new Thickness(0, 0, 3, 0),
+            Cursor = Cursors.Hand,
+            Background = active ? (Brush)FindResource("Brush.Canvas") : Brushes.Transparent,
+            BorderBrush = (Brush)FindResource(active ? "Brush.Accent" : "Brush.Divider"),
+            BorderThickness = active ? new Thickness(0, 2, 0, 0) : new Thickness(0),
+        };
+        chip.MouseLeftButtonDown += (_, e) =>
+        {
+            if (e.ChangedButton == MouseButton.Left) SwitchToTab(tab);
+        };
+        // Middle-click closes, matching browser muscle memory.
+        chip.MouseDown += (_, e) =>
+        {
+            if (e.ChangedButton == MouseButton.Middle) { CloseTab(tab); e.Handled = true; }
+        };
+        if (!active)
+        {
+            chip.MouseEnter += (_, _) => { if (!ReferenceEquals(tab, _active)) chip.Background = (Brush)FindResource("Brush.Hover"); };
+            chip.MouseLeave += (_, _) => { if (!ReferenceEquals(tab, _active)) chip.Background = Brushes.Transparent; };
+        }
+        return chip;
+    }
+
+    /// <summary>Disambiguates same-named tabs (e.g. several "Untitled") with a trailing count.</summary>
+    private string TabLabel(DocTab tab)
+    {
+        int total = _tabs.Count(t => t.Name == tab.Name);
+        if (total <= 1) return tab.Name;
+        int ordinal = _tabs.Where(t => t.Name == tab.Name).ToList().IndexOf(tab) + 1;
+        return $"{tab.Name} {ordinal}";
+    }
+
+    private static bool IsPristine(Document d) =>
+        d.Annotations.Count == 0 && d.Crop is null && d.BaseVersion == 0;
 
     private void OnSourceInit(object? sender, EventArgs e)
     {
@@ -123,6 +300,7 @@ public partial class EditorWindow : Window
 
         _dpi = VisualTreeHelper.GetDpi(this).DpiScaleX;
         Canvas.SetDpi(_dpi);
+        _active.ZoomInitialized = true; // this pass sets the first tab's zoom; later revisits restore it
 
         var (waW, waH) = WorkAreaDip();
 
@@ -233,7 +411,7 @@ public partial class EditorWindow : Window
 
     private void WireChrome()
     {
-        BtnNewCapture.Click += (_, _) => App.Current.CaptureRegion();
+        BtnNewCapture.Click += (_, _) => App.Current.CaptureRegionInto(this);
         BtnUndo.Click += (_, _) => { CommitTextEdit(); _doc.Undo(); };
         BtnRedo.Click += (_, _) => { CommitTextEdit(); _doc.Redo(); };
         BtnTrash.Click += (_, _) => TrashClicked();
@@ -243,6 +421,7 @@ public partial class EditorWindow : Window
         BtnCopy.Click += (_, _) => CopyImage();
         BtnSave.Click += (_, _) => ShowSaveMenu();
         BtnShare.Click += (_, _) => ShareImage();
+        BtnSettings.Click += (_, _) => App.Current.ShowSettings();
         BtnDragOut.PreviewMouseLeftButtonDown += (_, _) => StartDragOut();
         ColorWell.MouseLeftButtonDown += (_, _) => ShowColorPicker(ColorWell);
         EmojiButton.Click += (_, _) => ShowEmojiPicker();
@@ -921,6 +1100,7 @@ public partial class EditorWindow : Window
         CommitTextEdit();
         Canvas.EnterCropMode();
         NormalBar.Visibility = Visibility.Collapsed;
+        SettingsHost.Visibility = Visibility.Collapsed;
         CropBar.Visibility = Visibility.Visible;
         AspectCombo.SelectedIndex = 0;
         CropAspectRatio = 0;
@@ -941,6 +1121,7 @@ public partial class EditorWindow : Window
         Canvas.ExitCropMode();
         CropBar.Visibility = Visibility.Collapsed;
         NormalBar.Visibility = Visibility.Visible;
+        SettingsHost.Visibility = Visibility.Visible;
         var back = _tool is ToolKind.Crop or ToolKind.Image ? ToolKind.Select : _tool;
         _railButtons[back].IsChecked = true;
         Canvas.SetTool(back);
@@ -1241,6 +1422,10 @@ public partial class EditorWindow : Window
                 SaveAs();
                 e.Handled = true;
                 break;
+            case Key.W when ctrl:
+                CloseTab(_active);
+                e.Handled = true;
+                break;
             case Key.D0 when ctrl:
                 Canvas.SetZoom(1.0);
                 e.Handled = true;
@@ -1258,14 +1443,14 @@ public partial class EditorWindow : Window
 
     // ---- close / save prompt ---------------------------------------------------------
 
+    /// <summary>Prompt to save the active tab. False means "cancel the close".</summary>
     public bool ConfirmClose()
     {
         CommitTextEdit();
         // Crop/rotate/flip count as changes too; a fully undone doc counts as pristine.
-        bool pristine = _doc.Annotations.Count == 0 && _doc.Crop is null && _doc.BaseVersion == 0;
-        if (!_doc.Dirty || pristine) return true;
+        if (!_doc.Dirty || IsPristine(_doc)) return true;
         var result = MessageBox.Show(this,
-            "You have unsaved changes. Save before closing?",
+            $"“{_docName}” has unsaved changes. Save before closing?",
             "WinSitch", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
         switch (result)
         {
@@ -1279,11 +1464,23 @@ public partial class EditorWindow : Window
         }
     }
 
+    /// <summary>Prompt to save every dirty tab before the whole window closes.</summary>
+    public bool ConfirmCloseWindow()
+    {
+        foreach (var tab in _tabs.ToList())
+        {
+            if (!(tab.Doc.Dirty && !IsPristine(tab.Doc))) continue;
+            if (!ReferenceEquals(tab, _active)) SwitchToTab(tab); // show what we're saving
+            if (!ConfirmClose()) return false;
+        }
+        return true;
+    }
+
     private void OnClosingPrompt(object? sender, System.ComponentModel.CancelEventArgs e)
     {
         if (!_closeConfirmed)
         {
-            if (!ConfirmClose()) { e.Cancel = true; return; }
+            if (!ConfirmCloseWindow()) { e.Cancel = true; return; }
             _closeConfirmed = true;
         }
         RememberWindowSize();
