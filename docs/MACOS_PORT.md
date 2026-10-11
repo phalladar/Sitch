@@ -10,12 +10,14 @@ phases; update the status table as phases land.
 |---|---|
 | 0 — Rebrand + restructure | **Done.** `windows/Sitch`, legacy settings / login-item migration. |
 | 1 — Mac scaffold + pipeline | **Code done.** Menu-bar stub, icon, scripts, workflows; Developer ID signing verified locally. Pending: repo rename, secrets, `v0.2.0-rc1` dry run (notarization). |
-| 2–6 — Port | Not started. |
+| 2–6 — Port | **Done (2026-10-11), unreleased.** Core + 17 unit tests; Editor, Capture, Export, Shell ported. Verified on a 1x ultrawide: demo render parity, editor actions, real region/window/full-screen/recapture/quick captures, save/copy, quit prompt, single-instance forwarding, notarization of the full app. Not yet exercised: Retina/mixed-DPI capture, share sheet, open-at-login toggle, the Screen Recording prompt flow (the dev machine already had the grant). |
 
 Deviations from the original proposal, decided while building phase 1:
 - CI is two path-filtered workflows (`build-mac.yml`, `build-windows.yml`) instead of one `build.yml`.
-- No `SitchCore`/test target yet — it arrives with phase 2 (nothing to test in a stub); `swift test`
-  joins `build-mac.yml` then.
+- `SitchCore` + `swift test` arrived in phase 2 and run in `build-mac.yml`.
+- Phases 2–6 were built in parallel by separate agents against contract stubs (one per module).
+- A capture region is confined to the display the drag started on; keyboard 10-pt nudge is ⌥
+  (Ctrl+arrows belong to Mission Control).
 - `CFBundleDocumentTypes` waits until opening images works (phase 3), so "Open With" never offers
   a no-op.
 - The README download link keeps the `WinSitch.exe` asset name (every release attaches it);
