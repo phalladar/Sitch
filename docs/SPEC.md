@@ -163,6 +163,7 @@ transform. Undoable.
 |---|---|---|
 | Capture (region/window/full) | ⌥⌘4 (rebindable) | **Ctrl+Alt+4** (rebindable) |
 | Recapture last region | ⇧⌥⌘4 | **Ctrl+Alt+Shift+4** |
+| Quick capture → clipboard | — | **Ctrl+Alt+Shift+C** *(Sitch addition; Mac port ⌃⌥⌘4)* |
 | Undo / Redo | ⌘Z / ⇧⌘Z | Ctrl+Z / Ctrl+Y (+Ctrl+Shift+Z) |
 | Copy image | ⌘⇧C (v1.5) | Ctrl+Shift+C *(v1.5 parity)* |
 | Quit w/ unsaved warning | ⌘Q | Alt+F4 / close |

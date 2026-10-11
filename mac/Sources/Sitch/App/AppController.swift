@@ -20,7 +20,15 @@ final class AppController {
     private var menuBar: MenuBarController?
     private var editors: [EditorWindowController] = []
 
-    private static let hkCapture = 1, hkRecapture = 2
+    private static let hkCapture = 1, hkRecapture = 2, hkQuickCopy = 3
+
+    /// CONTRACT. The global hotkeys in Settings/menu order; `name` labels them in Settings and
+    /// in conflict messages.
+    static let hotkeySlots: [(id: Int, name: String, chord: WritableKeyPath<AppSettings, String>)] = [
+        (hkCapture, "Capture", \.captureHotkey),
+        (hkRecapture, "Recapture last region", \.recaptureHotkey),
+        (hkQuickCopy, "Capture to clipboard", \.quickCopyHotkey),
+    ]
 
     /// CONTRACT.
     func saveSettings() { SettingsStore.save(settings) }
@@ -34,6 +42,7 @@ final class AppController {
             switch id {
             case Self.hkCapture: self?.captureRegion()
             case Self.hkRecapture: self?.recaptureLast()
+            case Self.hkQuickCopy: self?.quickCapture(toClipboard: true)
             default: break
             }
         }
@@ -256,16 +265,27 @@ final class AppController {
         ])
     }
 
-    /// Re-read the hotkey settings and re-register both global hotkeys.
+    /// Re-read the hotkey settings and re-register every global hotkey.
     func registerHotkeys() {
         hotkeys.unregisterAll()
-        if let cap = HotkeyChord.parse(settings.captureHotkey), !hotkeys.register(id: Self.hkCapture, cap) {
-            Toast.show("Capture shortcut \(cap.symbols) is in use by another app.")
-        }
-        if let re = HotkeyChord.parse(settings.recaptureHotkey), !hotkeys.register(id: Self.hkRecapture, re) {
-            Toast.show("Recapture shortcut \(re.symbols) is in use by another app.")
+        var taken: [HotkeyChord: String] = [:]
+        for slot in Self.hotkeySlots {
+            guard let chord = HotkeyChord.parse(settings[keyPath: slot.chord]) else { continue }
+            // A settings file from before the recorder refused duplicates: first slot wins.
+            if let owner = taken[chord] {
+                Toast.show("\(slot.name) shortcut \(chord.symbols) is already used by \(owner).")
+            } else if hotkeys.register(id: slot.id, chord) {
+                taken[chord] = slot.name
+            } else {
+                Toast.show("\(slot.name) shortcut \(chord.symbols) is in use by another app.")
+            }
         }
         menuBar?.refreshShortcuts()
+    }
+
+    /// CONTRACT. Name of the other Sitch action already bound to `chord`, if any.
+    func hotkeyOwner(of chord: HotkeyChord, except id: Int) -> String? {
+        Self.hotkeySlots.first { $0.id != id && HotkeyChord.parse(settings[keyPath: $0.chord]) == chord }?.name
     }
 
     /// Settings' shortcut recorder needs the chords unregistered while it listens.

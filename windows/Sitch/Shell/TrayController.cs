@@ -49,14 +49,16 @@ public sealed class TrayController : IDisposable
 
         var recaptureItem = Item($"Recapture Last Region\t{App.Settings.RecaptureHotkey}", () => App.Current.RecaptureLast());
         menu.Items.Add(recaptureItem);
+        var quickCopyItem = Item($"Quick Capture → Clipboard\t{App.Settings.QuickCopyHotkey}", () => App.Current.QuickCapture(toClipboard: true));
         // Hotkeys are rebindable in Settings — refresh the labels every time the menu opens.
         menu.Opened += (_, _) =>
         {
             captureItem.Header = $"Capture Region\t{App.Settings.CaptureHotkey}";
             recaptureItem.Header = $"Recapture Last Region\t{App.Settings.RecaptureHotkey}";
+            quickCopyItem.Header = $"Quick Capture → Clipboard\t{App.Settings.QuickCopyHotkey}";
         };
         menu.Items.Add(new Separator());
-        menu.Items.Add(Item("Quick Capture → Clipboard", () => App.Current.QuickCapture(toClipboard: true)));
+        menu.Items.Add(quickCopyItem);
         menu.Items.Add(Item("Quick Capture → File", () => App.Current.QuickCapture(toClipboard: false)));
         menu.Items.Add(new Separator());
         menu.Items.Add(Item("Open Image…", OpenImageDialog));

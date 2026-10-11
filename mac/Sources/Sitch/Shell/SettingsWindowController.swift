@@ -209,17 +209,16 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
     private func capturePage() -> NSView {
         let s = app.settings
 
-        let capture = HotkeyRecorder(chord: s.captureHotkey) { [weak self] chord in
-            self?.app.settings.captureHotkey = chord
-            self?.app.saveSettings()
-            self?.app.registerHotkeys()
+        recorders = AppController.hotkeySlots.map { slot in
+            HotkeyRecorder(chord: s[keyPath: slot.chord], owner: { [weak self] chord in
+                self?.app.hotkeyOwner(of: chord, except: slot.id)
+            }) { [weak self] chord in
+                self?.app.settings[keyPath: slot.chord] = chord
+                self?.app.saveSettings()
+                self?.app.registerHotkeys()
+            }
         }
-        let recapture = HotkeyRecorder(chord: s.recaptureHotkey) { [weak self] chord in
-            self?.app.settings.recaptureHotkey = chord
-            self?.app.saveSettings()
-            self?.app.registerHotkeys()
-        }
-        recorders = [capture, recapture]
+        let shortcutRows = zip(AppController.hotkeySlots, recorders).map { row($0.name, $1.button) }
 
         let folder = NSTextField(string: s.defaultSaveFolder)
         folder.placeholderString = "~/Pictures/Sitch"
@@ -270,8 +269,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
 
         return page([
             section("Shortcuts"),
-            row("Capture", capture.button),
-            row("Recapture last region", recapture.button),
+        ] + shortcutRows + [
             note("Click a shortcut, then press the new combination (e.g. ⌥⌘4). Esc reverts."),
             section("Saving"), folderRow,
             row("Default format", format, labelWidth: 110),
@@ -353,16 +351,18 @@ final class ActionTarget: NSObject {
 
 /// Click, press a combination, done (Windows: WireHotkeyRecorder). Esc / Delete reverts.
 /// Bare keys would fire constantly while typing elsewhere, so a modifier is required unless
-/// it's an F-key.
+/// it's an F-key. A chord another Sitch action already owns is refused and recording continues.
 @MainActor
 final class HotkeyRecorder: NSObject {
     let button: NSButton
     private var chord: String
+    private let owner: (HotkeyChord) -> String?
     private let commit: (String) -> Void
     private var monitor: Any?
 
-    init(chord: String, commit: @escaping (String) -> Void) {
+    init(chord: String, owner: @escaping (HotkeyChord) -> String?, commit: @escaping (String) -> Void) {
         self.chord = chord
+        self.owner = owner
         self.commit = commit
         button = NSButton(title: "", target: nil, action: nil)
         button.bezelStyle = .rounded
@@ -414,6 +414,11 @@ final class HotkeyRecorder: NSObject {
         guard let key = HotkeyChord.keyName(forKeyCode: code) else { NSSound.beep(); return true }
         let candidate = HotkeyChord(modifiers: mods, key: key)
         guard !mods.isEmpty || candidate.isStandaloneKey else { NSSound.beep(); return true }
+        if let taken = owner(candidate) {
+            NSSound.beep()
+            button.title = "\(candidate.symbols) is used by \(taken)"
+            return true
+        }
         chord = candidate.description
         stopRecording(commit: true)
         return true

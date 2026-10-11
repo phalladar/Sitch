@@ -86,12 +86,17 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Capture" VerticalAlignment="Center"/>
                 <TextBox x:Name="HotkeyBox" Grid.Column="1" Style="{StaticResource Field}" IsReadOnly="True"
                          Margin="0,3" Cursor="Hand" ToolTip="Click, then press the new key combination"/>
                 <TextBlock Text="Recapture last region" Grid.Row="1" VerticalAlignment="Center"/>
                 <TextBox x:Name="RecaptureBox" Grid.Row="1" Grid.Column="1" Style="{StaticResource Field}"
+                         IsReadOnly="True" Margin="0,3" Cursor="Hand"
+                         ToolTip="Click, then press the new key combination"/>
+                <TextBlock Text="Capture to clipboard" Grid.Row="2" VerticalAlignment="Center"/>
+                <TextBox x:Name="QuickCopyBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource Field}"
                          IsReadOnly="True" Margin="0,3" Cursor="Hand"
                          ToolTip="Click, then press the new key combination"/>
             </Grid>

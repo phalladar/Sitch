@@ -16,6 +16,8 @@ public struct AppSettings: Codable, Equatable, Sendable {
     // -- Capture --------------------------------------------------------------
     public var captureHotkey = "Cmd+Opt+4"
     public var recaptureHotkey = "Cmd+Opt+Shift+4"
+    /// Quick Capture → Clipboard. ⌃ echoes the system's own "to the clipboard" chord (⌃⇧⌘4).
+    public var quickCopyHotkey = "Ctrl+Opt+Cmd+4"
     public var defaultSaveFolder = ""
     /// "png" | "jpg" | "pdf" | "tiff"
     public var defaultFormat = "png"
@@ -63,6 +65,7 @@ public struct AppSettings: Codable, Equatable, Sendable {
         offeredLoginItem = v(.offeredLoginItem, d.offeredLoginItem)
         captureHotkey = v(.captureHotkey, d.captureHotkey)
         recaptureHotkey = v(.recaptureHotkey, d.recaptureHotkey)
+        quickCopyHotkey = v(.quickCopyHotkey, d.quickCopyHotkey)
         defaultSaveFolder = v(.defaultSaveFolder, d.defaultSaveFolder)
         defaultFormat = v(.defaultFormat, d.defaultFormat)
         afterShowEditor = v(.afterShowEditor, d.afterShowEditor)

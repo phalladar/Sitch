@@ -160,6 +160,13 @@ private func pixel(_ image: CGImage, _ x: Int, _ y: Int) -> (UInt8, UInt8, UInt8
     #expect(HotkeyChord.keyName(forKeyCode: 0x15) == "4")
 }
 
+@Test func defaultHotkeysAreDistinct() throws {
+    let s = AppSettings()
+    let chords = try [s.captureHotkey, s.recaptureHotkey, s.quickCopyHotkey].map { try #require(HotkeyChord.parse($0)) }
+    #expect(Set(chords).count == chords.count)
+    #expect(chords[2].symbols == "⌃⌥⌘4")
+}
+
 @Test func colorHex() {
     #expect(RGBAColor(hex: "#FF3366") == .pink)
     #expect(RGBAColor(hex: "#80FF3366") == RGBAColor(0xFF, 0x33, 0x66, 0x80))

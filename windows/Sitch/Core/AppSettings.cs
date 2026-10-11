@@ -19,6 +19,8 @@ public class AppSettings
     // -- Capture --------------------------------------------------------------
     public string CaptureHotkey { get; set; } = "Ctrl+Alt+4";
     public string RecaptureHotkey { get; set; } = "Ctrl+Alt+Shift+4";
+    /// <summary>Quick Capture → Clipboard (C for copy).</summary>
+    public string QuickCopyHotkey { get; set; } = "Ctrl+Alt+Shift+C";
     public string DefaultSaveFolder { get; set; } = "";
     /// <summary>"png" | "jpg" | "pdf" | "tiff"</summary>
     public string DefaultFormat { get; set; } = "png";

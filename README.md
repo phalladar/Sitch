@@ -50,7 +50,7 @@ loved about Skitch:
 - Recapture the last region with one keystroke (`Ctrl+Alt+Shift+4`)
 - Freeze-frame picker with live size readout — correct on multi-monitor, mixed-DPI setups
 - Window picker that captures clean window content even when partially covered
-- Capture timer (3/5/10 s), quick capture straight to clipboard or file
+- Capture timer (3/5/10 s), quick capture straight to clipboard (`Ctrl+Alt+Shift+C`) or file
 - **Every capture is copied to the clipboard automatically** (on by default) — paste into chat
   before you've even annotated; configurable after-capture actions: show editor / copy / save
 - Optional watcher that opens the editor after a system `Win+PrtScn` screenshot
@@ -102,6 +102,7 @@ Requires the [.NET 10 SDK](https://dotnet.microsoft.com/download). No other depe
 | Capture (drag = region, click = window) | `Ctrl+Alt+4` *(configurable in Settings ▸ Capture)* |
 | Keyboard capture in the overlay | arrows move · `Shift`+arrows resize · `Enter` confirms |
 | Recapture last region | `Ctrl+Alt+Shift+4` *(configurable)* |
+| Quick capture to clipboard (skips the editor) | `Ctrl+Alt+Shift+C` *(configurable)* |
 | Undo / Redo | `Ctrl+Z` / `Ctrl+Y` |
 | Copy flattened image | `Ctrl+C` / `Ctrl+Shift+C` |
 | Save | `Ctrl+S` |

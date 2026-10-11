@@ -16,6 +16,15 @@ public partial class App : Application
 
     public const int HkCapture = 1;
     public const int HkRecapture = 2;
+    public const int HkQuickCopy = 3;
+
+    /// <summary>The global hotkeys in Settings/tray order; Name labels them in conflict messages.</summary>
+    public static readonly (int Id, string Name, Func<AppSettings, string> Get)[] HotkeySlots =
+    [
+        (HkCapture, "Capture", s => s.CaptureHotkey),
+        (HkRecapture, "Recapture last region", s => s.RecaptureHotkey),
+        (HkQuickCopy, "Capture to clipboard", s => s.QuickCopyHotkey),
+    ];
 
     private SingleInstance? _instance;
     private TrayController? _tray;
@@ -123,13 +132,27 @@ public partial class App : Application
     {
         if (_hotkeys is null) return;
         _hotkeys.UnregisterAll();
-        if (HotkeyChord.TryParse(Settings.CaptureHotkey, out var cap) &&
-            !_hotkeys.Register(HkCapture, cap))
-            NotifyPopup.Show($"Capture hotkey {cap} is in use by another app.");
-        if (HotkeyChord.TryParse(Settings.RecaptureHotkey, out var re) &&
-            !_hotkeys.Register(HkRecapture, re))
-            NotifyPopup.Show($"Recapture hotkey {re} is in use by another app.");
+        var taken = new Dictionary<HotkeyChord, string>();
+        foreach (var (id, name, get) in HotkeySlots)
+        {
+            if (!HotkeyChord.TryParse(get(Settings), out var chord)) continue;
+            // A settings file from before the recorder refused duplicates: first slot wins.
+            if (taken.TryGetValue(chord, out var owner))
+                NotifyPopup.Show($"{name} hotkey {chord} is already used by {owner}.");
+            else if (_hotkeys.Register(id, chord))
+                taken[chord] = name;
+            else
+                NotifyPopup.Show($"{name} hotkey {chord} is in use by another app.");
+        }
     }
+
+    /// <summary>The Settings recorder listens for chords that are currently registered.</summary>
+    public void UnregisterHotkeys() => _hotkeys?.UnregisterAll();
+
+    /// <summary>Name of the other Sitch action already bound to <paramref name="chord"/>, if any.</summary>
+    public static string? HotkeyOwner(HotkeyChord chord, int exceptId) =>
+        HotkeySlots.FirstOrDefault(s => s.Id != exceptId &&
+            HotkeyChord.TryParse(s.Get(Settings), out var c) && c == chord).Name;
 
     private void OnHotkey(int id)
     {
@@ -137,6 +160,7 @@ public partial class App : Application
         {
             case HkCapture: CaptureRegion(); break;
             case HkRecapture: RecaptureLast(); break;
+            case HkQuickCopy: QuickCapture(toClipboard: true); break;
         }
     }
 

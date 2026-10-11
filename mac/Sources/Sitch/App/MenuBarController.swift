@@ -8,6 +8,7 @@ final class MenuBarController: NSObject, NSMenuDelegate {
     private let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
     private let captureItem = NSMenuItem(title: "Capture Region", action: #selector(AppDelegate.captureRegion(_:)), keyEquivalent: "")
     private let recaptureItem = NSMenuItem(title: "Recapture Last Region", action: #selector(AppDelegate.recaptureLast(_:)), keyEquivalent: "")
+    private let quickCopyItem = NSMenuItem(title: "Quick Capture → Clipboard", action: #selector(AppDelegate.quickCaptureToClipboard(_:)), keyEquivalent: "")
     private let fullScreen = NSMenuItem(title: "Capture Full Screen", action: nil, keyEquivalent: "")
 
     override init() {
@@ -23,7 +24,7 @@ final class MenuBarController: NSObject, NSMenuDelegate {
         menu.addItem(fullScreen)
         menu.addItem(recaptureItem)
         menu.addItem(.separator())
-        menu.addItem(withTitle: "Quick Capture → Clipboard", action: #selector(AppDelegate.quickCaptureToClipboard(_:)), keyEquivalent: "")
+        menu.addItem(quickCopyItem)
         menu.addItem(withTitle: "Quick Capture → File", action: #selector(AppDelegate.quickCaptureToFile(_:)), keyEquivalent: "")
         menu.addItem(.separator())
         menu.addItem(withTitle: "Open Image…", action: #selector(AppDelegate.openImage(_:)), keyEquivalent: "")
@@ -43,6 +44,7 @@ final class MenuBarController: NSObject, NSMenuDelegate {
     func refreshShortcuts() {
         Self.show(AppController.shared.settings.captureHotkey, on: captureItem)
         Self.show(AppController.shared.settings.recaptureHotkey, on: recaptureItem)
+        Self.show(AppController.shared.settings.quickCopyHotkey, on: quickCopyItem)
     }
 
     // Displays come and go — rebuild the submenu each time it opens.

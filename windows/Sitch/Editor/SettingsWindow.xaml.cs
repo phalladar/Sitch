@@ -1,4 +1,5 @@
 using System.IO;
+using System.Media;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -49,8 +50,10 @@ public partial class SettingsWindow : Window
         // Capture
         HotkeyBox.Text = s.CaptureHotkey;
         RecaptureBox.Text = s.RecaptureHotkey;
-        WireHotkeyRecorder(HotkeyBox, chord => { s.CaptureHotkey = chord; Save(); App.Current.RegisterHotkeys(); });
-        WireHotkeyRecorder(RecaptureBox, chord => { s.RecaptureHotkey = chord; Save(); App.Current.RegisterHotkeys(); });
+        QuickCopyBox.Text = s.QuickCopyHotkey;
+        WireHotkeyRecorder(HotkeyBox, App.HkCapture, chord => { s.CaptureHotkey = chord; Save(); });
+        WireHotkeyRecorder(RecaptureBox, App.HkRecapture, chord => { s.RecaptureHotkey = chord; Save(); });
+        WireHotkeyRecorder(QuickCopyBox, App.HkQuickCopy, chord => { s.QuickCopyHotkey = chord; Save(); });
 
         FolderBox.Text = s.DefaultSaveFolder;
         FolderBox.LostFocus += (_, _) => { s.DefaultSaveFolder = FolderBox.Text.Trim(); Save(); };
@@ -132,18 +135,26 @@ public partial class SettingsWindow : Window
 
     private static void Save() => SettingsStore.Save(App.Settings);
 
-    /// <summary>Click the box, press a combination, done. Esc reverts, Backspace also reverts.</summary>
-    private static void WireHotkeyRecorder(TextBox box, Action<string> commit)
+    /// <summary>Click the box, press a combination, done. Esc reverts, Backspace also reverts.
+    /// A chord another Sitch action already owns is refused and recording continues.</summary>
+    private static void WireHotkeyRecorder(TextBox box, int slotId, Action<string> commit)
     {
         string previous = box.Text;
+        bool recording = false;
         box.GotKeyboardFocus += (_, _) =>
         {
             previous = box.Text;
             box.Text = "Press keys…";
+            recording = true;
+            // Registered hotkeys swallow their chord, so it would fire a capture instead of
+            // reaching this box.
+            App.Current.UnregisterHotkeys();
         };
         box.LostKeyboardFocus += (_, _) =>
         {
-            if (box.Text is "Press keys…" or "") box.Text = previous;
+            if (recording) box.Text = previous;
+            recording = false;
+            App.Current.RegisterHotkeys();
         };
         box.PreviewKeyDown += (_, e) =>
         {
@@ -164,9 +175,16 @@ public partial class SettingsWindow : Window
             // except for keys that are conventionally standalone.
             bool standalone = key is Key.Snapshot or (>= Key.F1 and <= Key.F12);
             if (chord.Modifiers == ModifierKeys.None && !standalone) return;
+            if (App.HotkeyOwner(chord, slotId) is { } owner)
+            {
+                SystemSounds.Beep.Play();
+                box.Text = $"{chord} is used by {owner}";
+                return;
+            }
 
             box.Text = chord.ToString();
             previous = box.Text;
+            recording = false;
             commit(chord.ToString());
             Keyboard.ClearFocus();
         };
