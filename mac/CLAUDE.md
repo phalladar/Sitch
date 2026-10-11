@@ -3,8 +3,8 @@
 Native Swift port of the Windows app in `../windows/Sitch`, which stays the reference
 implementation: translate its behavior and mirror its module names (`App/`, `Capture/`, `Core/`,
 `Editor/`, `Export/`, `Shell/`). Roadmap and the C# → Swift mapping table: `../docs/MACOS_PORT.md`.
-Status: **feature-complete port** (capture, editor with all 14 tools, export/share, shell), not yet
-released. `SitchCore` (library) holds the model + renderer and is covered by `swift test`.
+Status: **feature-complete port** (capture, editor with all 14 tools, export/share, shell), released
+since v0.2.0. `SitchCore` (library) holds the model + renderer and is covered by `swift test`.
 
 ## Stack
 - Swift 6 language mode, AppKit (code-built windows, no nibs/storyboards), SwiftPM only — open in

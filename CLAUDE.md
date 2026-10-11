@@ -7,7 +7,7 @@ no network, no telemetry. Formerly **WinSitch**; persisted names migrate on firs
 `SettingsStore.Load`, `StartupManager.MigrateLegacy`).
 
 **Two apps, one repo.** `windows/` is the shipping .NET/WPF app and the reference implementation;
-`mac/` is the native Swift port, feature-complete but not yet released (its own `mac/CLAUDE.md`; roadmap and C# → Swift
+`mac/` is the native Swift port, released since v0.2.0 (its own `mac/CLAUDE.md`; roadmap and C# → Swift
 mapping in `docs/MACOS_PORT.md`). Stack through Conventions below describe the Windows app;
 Versioning & release and Guardrails cover both.
 

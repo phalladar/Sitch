@@ -9,8 +9,8 @@ phases; update the status table as phases land.
 | Phase | State |
 |---|---|
 | 0 — Rebrand + restructure | **Done.** `windows/Sitch`, legacy settings / login-item migration. |
-| 1 — Mac scaffold + pipeline | **Code done.** Menu-bar stub, icon, scripts, workflows; Developer ID signing verified locally. Repo renamed to `phalladar/sitch` (2026-10-11); README, description and topics cover both platforms; version stamps at 0.2.0. Pending: the five signing secrets, `v0.2.0-rc1` dry run (notarization in CI). |
-| 2–6 — Port | **Done (2026-10-11), unreleased.** Core + 17 unit tests; Editor, Capture, Export, Shell ported. Verified on a 1x ultrawide: demo render parity, editor actions, real region/window/full-screen/recapture/quick captures, save/copy, quit prompt, single-instance forwarding, notarization of the full app. Not yet exercised: Retina/mixed-DPI capture, share sheet, open-at-login toggle, the Screen Recording prompt flow (the dev machine already had the grant). |
+| 1 — Mac scaffold + pipeline | **Code done.** Menu-bar stub, icon, scripts, workflows; Developer ID signing verified locally. **Done.** Repo renamed to `phalladar/sitch`; signing secrets set; `v0.2.0-rc1` dry run and **v0.2.0 released (2026-10-11)** with both platforms — CI notarization verified, Gatekeeper accepts the DMG. |
+| 2–6 — Port | **Done, released in v0.2.0 (2026-10-11).** Core + 17 unit tests; Editor, Capture, Export, Shell ported. Verified on a 1x ultrawide: demo render parity, editor actions, real region/window/full-screen/recapture/quick captures, save/copy, quit prompt, single-instance forwarding, notarization of the full app. Not yet exercised: Retina/mixed-DPI capture, share sheet, open-at-login toggle, the Screen Recording prompt flow (the dev machine already had the grant). |
 
 Deviations from the original proposal, decided while building phase 1:
 - CI is two path-filtered workflows (`build-mac.yml`, `build-windows.yml`) instead of one `build.yml`.
