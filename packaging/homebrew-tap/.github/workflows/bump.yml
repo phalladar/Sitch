@@ -1,0 +1,31 @@
+name: Bump cask to latest Sitch release
+
+on:
+  schedule:
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Update Casks/sitch.rb if a newer release exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag=$(gh api repos/phalladar/Sitch/releases/latest --jq .tag_name)
+          latest=${tag#v}
+          current=$(sed -n 's/^  version "\(.*\)"/\1/p' Casks/sitch.rb)
+          if [ "$latest" = "$current" ]; then echo "Up to date ($current)"; exit 0; fi
+          curl -fsSL -o Sitch.dmg "https://github.com/phalladar/Sitch/releases/download/${tag}/Sitch.dmg"
+          sha=$(sha256sum Sitch.dmg | cut -d' ' -f1)
+          sed -i -e "s/^  version \".*\"/  version \"${latest}\"/" -e "s/^  sha256 \".*\"/  sha256 \"${sha}\"/" Casks/sitch.rb
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "sitch ${latest}"
+          git push
