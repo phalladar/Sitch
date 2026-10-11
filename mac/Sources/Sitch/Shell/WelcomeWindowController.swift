@@ -19,6 +19,8 @@ final class WelcomeWindowController: NSWindowController, NSWindowDelegate {
     private var targets: [ActionTarget] = []
     private var permissionStatus: NSTextField!
     private var permissionButton: NSButton!
+    /// Present only when the login-item offer is due (installed app, not offered before).
+    private var loginCheckbox: NSButton?
 
     private var hotkey: String {
         let s = AppController.shared.settings.captureHotkey
@@ -41,7 +43,11 @@ final class WelcomeWindowController: NSWindowController, NSWindowDelegate {
 
     func windowDidBecomeKey(_ notification: Notification) { refreshPermission() }
 
-    func windowWillClose(_ notification: Notification) { Self.shared = nil }
+    func windowWillClose(_ notification: Notification) {
+        // Leaving the welcome by any route answers the offer with the checkbox's state.
+        if let loginCheckbox { LoginItemOffer.record(accepted: loginCheckbox.state == .on) }
+        Self.shared = nil
+    }
 
     private func build() {
         guard let window, let content = window.contentView else { return }
@@ -86,7 +92,7 @@ final class WelcomeWindowController: NSWindowController, NSWindowDelegate {
         let buttons = NSStackView(views: [spacer, settings, capture])
         buttons.spacing = 8
 
-        let stack = NSStackView(views: [
+        var rows: [NSView] = [
             header,
             line("Press  \(hotkey)  to capture — drag a region or click a window.", bold: true),
             line("Sitch lives in your menu bar: click the pink arrow for window and full-screen "
@@ -94,13 +100,25 @@ final class WelcomeWindowController: NSWindowController, NSWindowDelegate {
             line("Every capture is copied to your clipboard automatically, ready to paste."),
             permissionStatus,
             permissionButton,
-            buttons,
-        ])
+        ]
+        if LoginItemOffer.isDue {
+            // Pre-checked offer, applied when the welcome closes (macOS also notifies when a
+            // login item is added); unchecking it is the "no".
+            let box = NSButton(checkboxWithTitle: "Open Sitch automatically when you log in", target: nil, action: nil)
+            box.state = .on
+            loginCheckbox = box
+            rows.append(box)
+        } else if LoginItemOffer.isRunningFromDiskImage {
+            rows.append(line("To finish installing, drag Sitch into your Applications folder, then open it from there.",
+                             bold: true))
+        }
+        rows.append(buttons)
+        let stack = NSStackView(views: rows)
         stack.orientation = .vertical
         stack.alignment = .leading
         stack.spacing = 12
         stack.setCustomSpacing(20, after: header)
-        stack.setCustomSpacing(22, after: permissionButton)
+        stack.setCustomSpacing(22, after: rows[rows.count - 2])
         stack.edgeInsets = NSEdgeInsets(top: 24, left: 28, bottom: 24, right: 28)
         stack.translatesAutoresizingMaskIntoConstraints = false
         content.addSubview(stack)

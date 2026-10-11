@@ -9,6 +9,9 @@ public struct AppSettings: Codable, Equatable, Sendable {
     /// Dock icon while an editor is open (Windows: "show editor windows in the taskbar").
     public var showInDock = true
     public var openAtLogin = false
+    /// The one-time "Open Sitch at login?" offer has been made (made on the first launch from an
+    /// Applications folder, so a first run straight off the disk image doesn't use it up).
+    public var offeredLoginItem = false
 
     // -- Capture --------------------------------------------------------------
     public var captureHotkey = "Cmd+Opt+4"
@@ -57,6 +60,7 @@ public struct AppSettings: Codable, Equatable, Sendable {
         theme = v(.theme, d.theme)
         showInDock = v(.showInDock, d.showInDock)
         openAtLogin = v(.openAtLogin, d.openAtLogin)
+        offeredLoginItem = v(.offeredLoginItem, d.offeredLoginItem)
         captureHotkey = v(.captureHotkey, d.captureHotkey)
         recaptureHotkey = v(.recaptureHotkey, d.recaptureHotkey)
         defaultSaveFolder = v(.defaultSaveFolder, d.defaultSaveFolder)

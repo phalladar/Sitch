@@ -81,7 +81,8 @@ Versioning & release and Guardrails cover both.
   About string, and `Editor/SettingsWindow.xaml` footer. The Mac app takes it from the tag.
 - Cut a release: bump those four, commit, push, then push a tag `vX.Y.Z`.
   `.github/workflows/release.yml` fails fast if the four stamps don't match the tag, builds
-  `Sitch.exe` (windows-latest) and a signed, notarized `Sitch-macOS.zip` (macos-26), and publishes
+  `Sitch.exe` (windows-latest) and a signed, notarized `Sitch.dmg` installer + `Sitch-macOS.zip`
+  (macos-26), and publishes
   both in ONE release — the platforms share "Latest", so a release missing either asset would
   break that platform's `releases/latest/download/…` link. It also attaches the exe as
   `WinSitch.exe`, the name the README and older links download. `vX.Y.Z-rcN` tags publish as

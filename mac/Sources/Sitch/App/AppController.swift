@@ -45,8 +45,11 @@ final class AppController {
         // menu-bar icon (and macOS may hide it behind the notch) — i.e. nothing visible at all.
         if firstRun && arguments.isEmpty {
             saveSettings() // materialize settings so the welcome shows once
-            WelcomeWindowController.show()
+            WelcomeWindowController.show() // carries the login-item offer when it's due
             NSApp.activate()
+        } else if LoginItemOffer.isDue && !arguments.contains(where: { $0.hasPrefix("--") }) {
+            // Installed after a first run elsewhere (e.g. straight off the disk image).
+            DispatchQueue.main.async { LoginItemOffer.ask() }
         }
     }
 

@@ -25,6 +25,14 @@ released. `SitchCore` (library) holds the model + renderer and is covered by `sw
 - `SIGN_IDENTITY="Developer ID Application: Mind Meat Machine, LLC (G99WQY2ZW3)"` signs with the
   hardened runtime + timestamp (identity is in the login keychain). Use it for dev builds once
   capture lands: ad-hoc rebuilds lose the Screen Recording grant.
+- `./scripts/make-dmg.sh [Sitch.dmg]` — the installer: drag-to-Applications disk image with
+  background art (`scripts/make-dmg-background.swift`), signed + notarized + stapled when
+  `SIGN_IDENTITY` / `NOTARY_*` are set. Run it after `notarize.sh` so the app inside is stapled.
+  The Finder layout step needs Apple Events to Finder; if refused it warns and ships unstyled.
+- Open at login: offered once (`settings.offeredLoginItem`) on the first launch from an
+  Applications folder — a pre-checked box in the first-run Welcome, else an alert
+  (`Shell/LoginItemOffer.swift`). Copies on the disk image or translocated get an
+  "install first" note instead, since a login item there would point at a vanishing path.
 - `swift scripts/make-icon.swift Resources/AppIcon.icns` regenerates the icon (vector redraw of
   the Windows `.ico`); the `.icns` is committed.
 - `./scripts/smoke-test.sh <binary> [seconds]` fails if the app exits during launch.

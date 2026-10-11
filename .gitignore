@@ -19,3 +19,4 @@ Desktop.ini
 *.xcodeproj
 .DS_Store
 mac/*.zip
+mac/*.dmg

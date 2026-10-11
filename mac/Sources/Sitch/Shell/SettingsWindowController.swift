@@ -195,6 +195,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
         do {
             try LoginItem.setEnabled(on)
             app.settings.openAtLogin = on
+            app.settings.offeredLoginItem = true // an explicit choice; never offer again
             app.saveSettings()
         } catch {
             let alert = NSAlert()
