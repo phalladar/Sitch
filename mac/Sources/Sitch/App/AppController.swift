@@ -122,6 +122,7 @@ final class AppController {
         capture.startInteractive(.region) { [weak self] result in
             guard let self else { return }
             rememberRegion(result)
+            defer { returnFocusIfIdle() }
             if toClipboard, ClipboardHelper.copy(result.image, pointScale: result.pointScale) {
                 Toast.show("Copied to clipboard.", thumbnail: result.image)
                 return
@@ -174,7 +175,15 @@ final class AppController {
             into.addTab(EditorWindowController(image: result.image, title: "Untitled", pointScale: result.pointScale))
         } else if settings.afterShowEditor || !handled {
             openEditor(image: result.image, title: "Untitled", pointScale: result.pointScale, sourceRect: result.sourceRect)
+        } else {
+            returnFocusIfIdle()
         }
+    }
+
+    /// The overlay activated Sitch; with no editor to show, hand focus back to the app the
+    /// user was in rather than leaving an invisible app frontmost.
+    private func returnFocusIfIdle() {
+        if editors.isEmpty { NSApp.deactivate() }
     }
 
     private func rememberRegion(_ result: CaptureResult) {
@@ -254,6 +263,11 @@ final class AppController {
             Toast.show("Recapture shortcut \(re.symbols) is in use by another app.")
         }
         menuBar?.refreshShortcuts()
+    }
+
+    /// Settings' shortcut recorder needs the chords unregistered while it listens.
+    func suspendHotkeys(_ suspended: Bool) {
+        if suspended { hotkeys.unregisterAll() } else { registerHotkeys() }
     }
 
     func updateScreenshotWatcher() {

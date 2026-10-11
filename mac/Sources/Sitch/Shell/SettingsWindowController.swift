@@ -380,6 +380,9 @@ final class HotkeyRecorder: NSObject {
     @objc private func clicked(_ sender: Any?) {
         if monitor != nil { stopRecording(commit: false); return }
         button.title = "Press keys…"
+        // Registered Carbon hotkeys swallow their chord before any monitor sees it, so pressing
+        // the current shortcut would fire a capture instead of being recorded.
+        AppController.shared.suspendHotkeys(true)
         monitor = NSEvent.addLocalMonitorForEvents(matching: [.keyDown, .leftMouseDown]) { [weak self] event in
             let swallow = MainActor.assumeIsolated { self?.handle(event) ?? false }
             return swallow ? nil : event
@@ -416,8 +419,10 @@ final class HotkeyRecorder: NSObject {
     }
 
     func stopRecording(commit doCommit: Bool) {
-        if let monitor { NSEvent.removeMonitor(monitor) }
-        monitor = nil
+        guard let monitor else { return }
+        NSEvent.removeMonitor(monitor)
+        self.monitor = nil
+        AppController.shared.suspendHotkeys(false)
         refresh()
         if doCommit { commit(chord) }
     }

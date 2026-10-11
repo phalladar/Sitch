@@ -129,6 +129,34 @@ broken). `StartupManager.MigrateLegacy()` replaces a `WinSitch` HKCU Run entry w
 preserving its Task-Manager enabled/disabled state. Mutex/pipe names changed, so an old WinSitch
 and a new Sitch can run side by side — the second to start loses the hotkey registration.
 
+## macOS port (`mac/`)
+
+A translation, not shared code: `windows/Sitch` is the reference implementation, and every
+invariant above holds on the Mac too. Same module names; differences that matter:
+
+- **`SitchCore` (library, `swift test`)** — the document model, annotations, `Renderer`,
+  `EffectRenderer`, settings, `HotkeyChord`, demo document. **Document space is pixels with a
+  TOP-LEFT origin**, exactly as on Windows: every CGContext the renderer draws into is flipped
+  (`Draw.makeContext`), images go through `Draw.image` (draws upright in a flipped context) and
+  text through `TextLayout` (AppKit attributed strings against a flipped `NSGraphicsContext`).
+  Annotation code therefore ports line for line from the C#. Pixelate/blur are the same byte
+  loops; spotlight dims, then clears the union of the spot rects in a transparency layer.
+- **Capture coordinates** — `Capture/` works in **global points, top-left origin at the primary
+  display** (Quartz display space, as used by CGWindowList and ScreenCaptureKit). Per-display
+  pixels = points × that display's scale; AppKit's bottom-left space appears only at the
+  NSWindow/NSEvent boundary. Frames are frozen per display with ScreenCaptureKit
+  (`CGDisplayCreateImage`/`CGWindowListCreateImage` are gone on macOS 15). A region is limited
+  to the display the drag started on, like macOS's own ⇧⌘4.
+- **Zoom** — "device pixels per document pixel", like Windows: points per doc px =
+  zoom / `backingScaleFactor`, so 100% is pixel-perfect on Retina too.
+- **Point scale** — `Document.pointScale` (2 for a Retina capture, from DPI metadata for opened
+  files) makes exports keep their on-screen size: PDF page = px / scale pt, PNG DPI = 72 × scale.
+- **Shell** — menu-bar `NSStatusItem` (tray), Carbon `RegisterEventHotKey` (no Accessibility
+  prompt), `SMAppService` login item, native window tabs instead of the in-window tab strip,
+  distributed notification instead of the named pipe for single-instance arg forwarding.
+- **Permission** — Screen Recording (TCC) gates every capture; the grant is tied to the code
+  signature, so ad-hoc rebuilds lose it (sign dev builds with the Developer ID).
+
 ## License guardrail
 
 ShareX, Greenshot, and Flameshot are GPL — **architecture reference only, never copy or port their
