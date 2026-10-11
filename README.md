@@ -20,7 +20,7 @@ Free, open source, native on both platforms, and nothing ever leaves your comput
 
 <br/>
 
-<img src="docs/assets/editor-mac.png" width="860" alt="Sitch screenshot annotation editor on macOS: a Skitch-style tapered arrow, a highlight, a box and pixelated redactions on a dashboard screenshot"/>
+<img src="docs/assets/demo.gif" width="860" alt="Sitch demo on macOS: press ⌘⌥4, drag over a dashboard, add a Skitch-style tapered arrow and text, box the revenue figure and pixelate customer emails"/>
 
 </div>
 
@@ -204,16 +204,18 @@ shipped in v0.2.0. Existing settings migrate automatically.
 
 <table>
 <tr>
+<td width="50%"><img src="docs/assets/editor-mac.png" alt="Sitch screenshot annotation editor on macOS with a Skitch-style tapered arrow, a highlight and pixelated redactions"/><br/><sub><b>Mac editor</b> — tapered arrow, highlighter, pixelate</sub></td>
 <td width="50%"><img src="docs/assets/editor-dark.png" alt="Sitch screenshot editor on Windows 11 in dark mode with a tapered arrow, highlighter and pixelate redaction"/><br/><sub><b>Windows editor, dark theme</b> — tapered arrow, highlighter, pixelate, stamps</sub></td>
-<td width="50%"><img src="docs/assets/editor-light.png" alt="Sitch screenshot annotation editor in light mode on Windows 11"/><br/><sub><b>Light theme</b></sub></td>
 </tr>
 <tr>
+<td><img src="docs/assets/editor-light.png" alt="Sitch screenshot annotation editor in light mode on Windows 11"/><br/><sub><b>Light theme</b></sub></td>
 <td><img src="docs/assets/region-capture.png" alt="Sitch region capture overlay: frozen, dimmed screen with a live pixel-size readout"/><br/><sub><b>Region capture</b> — frozen screen, live size readout</sub></td>
+</tr>
+<tr>
 <td><img src="docs/assets/crop-mode.png" alt="Sitch non-destructive crop with aspect-ratio presets and rule-of-thirds grid"/><br/><sub><b>Non-destructive crop</b> — presets, exact size, thirds grid</sub></td>
+<td align="center"><img src="docs/assets/settings.png" width="300" alt="Sitch settings: configurable screenshot hotkey, export format and after-capture actions"/><br/><sub><b>Settings</b> — every capture hotkey is configurable</sub></td>
 </tr>
 </table>
-
-<p align="center"><img src="docs/assets/settings.png" width="560" alt="Sitch settings: configurable screenshot hotkey, export format and after-capture actions"/><br/><sub><b>Settings</b> — every capture hotkey is configurable</sub></p>
 
 ## Requirements
 

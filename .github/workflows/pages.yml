@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       # Screenshots live in docs/assets so the README can use them too; copy, don't duplicate in git.
-      - run: mkdir -p site/assets && cp docs/assets/*.png site/assets/
+      - run: mkdir -p site/assets && cp docs/assets/*.png docs/assets/*.gif site/assets/
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:
