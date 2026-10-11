@@ -11,7 +11,7 @@
     <AssemblyName>Sitch</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\sitch.ico</ApplicationIcon>
-    <Version>0.1.2</Version>
+    <Version>0.2.0</Version>
     <Authors>Josh Auriemma</Authors>
     <Product>Sitch</Product>
     <Description>Skitch-style screenshot annotation for Windows. Capture, annotate, share.</Description>

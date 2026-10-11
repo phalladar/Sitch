@@ -90,7 +90,7 @@ public sealed class TrayController : IDisposable
     private static void ShowAbout()
     {
         MessageBox.Show(
-            "Sitch 0.1.2\n\nSkitch-style screenshot annotation for Windows.\nCapture. Annotate. Share.\n\n" +
+            "Sitch 0.2.0\n\nSkitch-style screenshot annotation for Windows.\nCapture. Annotate. Share.\n\n" +
             "MIT License — © 2026 Josh Auriemma\ngithub.com/phalladar/sitch",
             "About Sitch", MessageBoxButton.OK, MessageBoxImage.Information);
     }

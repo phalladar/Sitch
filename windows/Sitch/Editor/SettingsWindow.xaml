@@ -160,7 +160,7 @@
             <TextBlock Style="{StaticResource Note}" Text="How much everything outside a spotlight is dimmed."/>
         </StackPanel>
 
-        <TextBlock Grid.Row="2" Text="Sitch 0.1.2" Foreground="{DynamicResource Brush.TextDim}"
+        <TextBlock Grid.Row="2" Text="Sitch 0.2.0" Foreground="{DynamicResource Brush.TextDim}"
                    FontSize="11" HorizontalAlignment="Center" Margin="0,12,0,0"/>
     </Grid>
 </Window>
