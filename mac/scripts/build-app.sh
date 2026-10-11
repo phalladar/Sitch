@@ -30,6 +30,13 @@ mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN_DIR/Sitch" "$APP/Contents/MacOS/"
 cp Resources/AppIcon.icns "$APP/Contents/Resources/"
 cp ../LICENSE "$APP/Contents/Resources/LICENSE.txt"
+# The installer window's art lives inside the bundle (sealed by the signature below): Finder never
+# lists package contents, so even users who show hidden files don't see a .background folder.
+BG="$(mktemp -d)"
+swift scripts/make-dmg-background.swift "$BG" >/dev/null
+tiffutil -cathidpicheck "$BG/background.png" "$BG/background@2x.png" \
+    -out "$APP/Contents/Resources/DMGBackground.tiff" 2>/dev/null
+rm -rf "$BG"
 
 # LSUIElement: menu-bar app; it switches to a regular (Dock) app only while an editor is open.
 cat > "$APP/Contents/Info.plist" <<EOF

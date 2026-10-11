@@ -1,6 +1,6 @@
 // Draws the disk-image window background: a soft panel with Sitch's tapered pink arrow pointing
 // from the app icon to the Applications shortcut, plus a one-line instruction. Written at 1x and
-// 2x; make-dmg.sh merges them into one HiDPI TIFF. Layout must match make-dmg.sh: 600×400 pt
+// 2x; build-app.sh merges them into one HiDPI TIFF inside the app bundle. Layout must match make-dmg.sh: 600×400 pt
 // window, icons centered at (150, 190) and (450, 190).
 // Usage (from mac/): swift scripts/make-dmg-background.swift OUT_DIR
 import AppKit
@@ -49,10 +49,10 @@ func render(scale: CGFloat) -> Data {
                               colors: [hex("#FAFAFC"), hex("#ECECF1")] as CFArray, locations: [0, 1])!
     ctx.drawLinearGradient(gradient, start: .zero, end: CGPoint(x: 0, y: size.height), options: [])
 
-    // Slight upward sweep reads as "move this over there", the way a Skitch arrow would be drawn.
+    // Level with the icon centers (y = 190), between the two icons.
     ctx.saveGState()
     ctx.setShadow(offset: CGSize(width: 0, height: -2 * scale), blur: 6 * scale, color: hex("#000000", 0.18))
-    ctx.addPath(taperedArrow(from: CGPoint(x: 238, y: 206), to: CGPoint(x: 362, y: 178), width: 22))
+    ctx.addPath(taperedArrow(from: CGPoint(x: 240, y: 190), to: CGPoint(x: 360, y: 190), width: 22))
     ctx.setFillColor(hex("#FF3366"))
     ctx.fillPath()
     ctx.restoreGState()

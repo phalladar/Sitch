@@ -22,14 +22,12 @@ WORK="$(mktemp -d)"
 STAGE="$WORK/stage"
 MOUNT="$WORK/mount"
 trap 'hdiutil detach "$MOUNT" -quiet -force 2>/dev/null || true; rm -rf "$WORK"' EXIT
-mkdir -p "$STAGE/.background" "$MOUNT"
+mkdir -p "$STAGE" "$MOUNT"
 
 ditto "$APP" "$STAGE/Sitch.app"
 ln -s /Applications "$STAGE/Applications"
-swift scripts/make-dmg-background.swift "$WORK/bg" >/dev/null
-# One TIFF with both reps, so Retina displays get the 2x art.
-tiffutil -cathidpicheck "$WORK/bg/background.png" "$WORK/bg/background@2x.png" \
-    -out "$STAGE/.background/background.tiff" 2>/dev/null
+[[ -f "$STAGE/Sitch.app/Contents/Resources/DMGBackground.tiff" ]] \
+    || { echo "$APP has no DMGBackground.tiff; rebuild it with build-app.sh" >&2; exit 1; }
 
 hdiutil create -quiet -volname "$VOLNAME" -srcfolder "$STAGE" -fs HFS+ -format UDRW -ov "$WORK/rw.dmg"
 hdiutil attach -quiet -readwrite -noverify -noautoopen -mountpoint "$MOUNT" "$WORK/rw.dmg"
@@ -49,11 +47,11 @@ tell application "Finder"
         set arrangement of opts to not arranged
         set icon size of opts to 128
         set text size of opts to 13
-        set background picture of opts to file ".background:background.tiff"
-        -- Finder places items ~44 pt below the given point; these land the icon centers at
-        -- y = 190, where make-dmg-background.swift draws the arrow between them.
-        set position of item "Sitch.app" of container window to {150, 146}
-        set position of item "Applications" of container window to {450, 146}
+        -- Art from inside the bundle (see build-app.sh): no visible .background folder.
+        set background picture of opts to file "Sitch.app:Contents:Resources:DMGBackground.tiff"
+        -- Icon centers; make-dmg-background.swift draws the arrow between them at y = 190.
+        set position of item "Sitch.app" of container window to {150, 190}
+        set position of item "Applications" of container window to {450, 190}
         update without registering applications
         delay 1
         close
@@ -64,8 +62,7 @@ then
     echo "warning: Finder layout step failed; the disk image will open unstyled" >&2
 fi
 
-# Keep the art folder out of sight and don't ship the mount's FSEvents log.
-chflags hidden "$MOUNT/.background"
+# Don't ship the mount's FSEvents log or trash.
 rm -rf "$MOUNT/.fseventsd" "$MOUNT/.Trashes"
 chmod -Rf go-w "$MOUNT" 2>/dev/null || true
 sync

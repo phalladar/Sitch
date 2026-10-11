@@ -26,7 +26,8 @@ released. `SitchCore` (library) holds the model + renderer and is covered by `sw
   hardened runtime + timestamp (identity is in the login keychain). Use it for dev builds once
   capture lands: ad-hoc rebuilds lose the Screen Recording grant.
 - `./scripts/make-dmg.sh [Sitch.dmg]` — the installer: drag-to-Applications disk image with
-  background art (`scripts/make-dmg-background.swift`), signed + notarized + stapled when
+  background art (`scripts/make-dmg-background.swift`, stored in the app as
+  `Resources/DMGBackground.tiff` so no `.background` folder shows), signed + notarized + stapled when
   `SIGN_IDENTITY` / `NOTARY_*` are set. Run it after `notarize.sh` so the app inside is stapled.
   The Finder layout step needs Apple Events to Finder; if refused it warns and ships unstyled.
 - Open at login: offered once (`settings.offeredLoginItem`) on the first launch from an
