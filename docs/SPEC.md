@@ -1,4 +1,4 @@
-# WinSitch — Feature Specification
+# Sitch — Feature Specification
 
 A faithful Windows clone of **iSkitch** (iskitch.com, Mac App Store id 6773733499, by Color Vivo
 Internet S.L.) — itself a modern native remake of the classic Evernote **Skitch**. This spec is the
@@ -24,7 +24,7 @@ version-history JSON, and Skitch-heritage research. Anything the original never 
   Captures never leave the machine unless the user shares them.
 - **Never saves silently:** the user picks the destination via Save dialog or drag-out. (Default save
   folder + default format are configurable in Settings ▸ Capture.)
-- Single document per editor window; window title `{Document name} — WinSitch` (e.g. `Untitled — WinSitch`).
+- Single document per editor window; window title `{Document name} — Sitch` (e.g. `Untitled — Sitch`).
 - Light / Dark / System appearance.
 - Localizable (iSkitch ships 8 languages: EN ES FR DE IT PT JA KO). English-first for v1, resource-based strings from day one.
 
@@ -32,7 +32,7 @@ version-history JSON, and Skitch-heritage research. Anything the original never 
 
 | Feature | Behavior |
 |---|---|
-| Region capture | Default hotkey (iSkitch: ⌥⌘4 → **WinSitch default: `Ctrl+Alt+4`**, rebindable). Crosshair drag over a **frozen** frame of the desktop. Opens straight in editor. |
+| Region capture | Default hotkey (iSkitch: ⌥⌘4 → **Sitch default: `Ctrl+Alt+4`**, rebindable). Crosshair drag over a **frozen** frame of the desktop. Opens straight in editor. |
 | Window capture | Same overlay; hover highlights a window (DWM extended-frame bounds, no shadow); click captures it — including occluded windows. |
 | Full screen | Captures a chosen display (multi-display: pick which screen, v1.3.0). |
 | Recapture last region | Repeat exact same region without selecting again (iSkitch: ⇧⌥⌘4 → **`Ctrl+Alt+Shift+4`**). |
@@ -41,7 +41,7 @@ version-history JSON, and Skitch-heritage research. Anything the original never 
 | After-capture actions | Configurable, "Shottr-style", any combination of: **Show editor / Copy to clipboard / Save to file**. Default: show editor **+ copy to clipboard** (deliberate deviation from iSkitch's editor-only default — paste-ready immediately). |
 | System-screenshot watcher | "Open the editor automatically after a system screenshot" — watches where the OS saves screenshots (v1.2.0). Windows analog: watch `%USERPROFILE%\Pictures\Screenshots` (Win+PrtScn) — **[adapted]**, off by default. |
 | Multi-display | Region/window capture on any display; editor opens on the display you're working on (v1.4.0; full any-display capture is v1.5.0 parity). |
-| Open existing images | Drop an image onto the tray/Dock icon or "Open with WinSitch" from Explorer → opens straight in the editor. |
+| Open existing images | Drop an image onto the tray/Dock icon or "Open with Sitch" from Explorer → opens straight in the editor. |
 | Capture fidelity | Capture at **physical pixels** (per-monitor DPI). Copy to clipboard at full size (1x) so high-DPI shots paste at full resolution (v1.3.0). Editor shows a size + DPI readout. *iSkitch's only App Store review is 1-star for "very poor capture quality" — capture fidelity is a differentiation opportunity.* |
 
 Region overlay UX (from Skitch/ShareX conventions, iSkitch unpublished — **[inferred]**): dimmed
@@ -149,11 +149,11 @@ transform. Undoable.
   · After-capture actions (show/copy/save, any combo) · timer · system-screenshot watcher.
 - **Editor**: per-tool defaults **[contents never published — inferred: default color, width,
   font/size, obscure style, remember-last-tool]**.
-- Store: JSON in `%APPDATA%\WinSitch\settings.json` (iSkitch uses UserDefaults).
+- Store: JSON in `%APPDATA%\Sitch\settings.json` (iSkitch uses UserDefaults).
 
 ## 8. Shortcut map (Windows)
 
-| Action | iSkitch (macOS) | WinSitch |
+| Action | iSkitch (macOS) | Sitch |
 |---|---|---|
 | Capture (region/window/full) | ⌥⌘4 (rebindable) | **Ctrl+Alt+4** (rebindable) |
 | Recapture last region | ⇧⌥⌘4 | **Ctrl+Alt+Shift+4** |

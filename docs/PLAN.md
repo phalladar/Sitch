@@ -1,4 +1,4 @@
-# WinSitch — Build Plan
+# Sitch (formerly WinSitch) — Build Plan
 
 Goal: a **standalone Windows executable** (no installer, no preinstalled runtime) implementing
 `SPEC.md`. This plan encodes the decisions from the July 2026 research pass (18 research topics,
@@ -44,10 +44,10 @@ utility) · **Rust-native** (canvas text editing/IME/a11y immature).
 ## 2. Architecture
 
 ```
-WinSitch.exe
+Sitch.exe
 ├─ AppShell        tray icon (H.NotifyIcon), single-instance (Global\ mutex + named pipe +
 │                  AllowSetForegroundWindow handoff), RegisterHotKey w/ MOD_NOREPEAT,
-│                  settings store (JSON, %APPDATA%\WinSitch), run-at-login (HKCU Run +
+│                  settings store (JSON, %APPDATA%\Sitch), run-at-login (HKCU Run +
 │                  StartupApproved check), toasts
 ├─ Capture         freeze-frame engine: BitBlt(SRCCOPY|CAPTUREBLT) of entire virtual screen
 │                  (physical px under PMv2) → one borderless TopMost overlay window PER MONITOR
@@ -128,7 +128,7 @@ Each milestone ends runnable.
 
 ## 5. Open product decisions (Josh)
 
-1. **Name** — working title `WinSitch` (repo name). Alternatives welcome; affects exe/branding only.
+1. **Name** — ~~working title `WinSitch`~~ → resolved: renamed **Sitch** (0.2.0) when the macOS port was planned; one brand for both platforms.
 2. **Default hotkey** — `Ctrl+Alt+4` proposed (mirrors ⌥⌘4). PrintScreen as optional alias?
 3. **Brand color** — keep iSkitch pink `#FF3366` or differentiate? (Trade-dress: cloning UX/features
    is fine; consider distinct name/icon/accent to keep distance from their branding.)

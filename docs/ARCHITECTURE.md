@@ -1,4 +1,4 @@
-# WinSitch — Architecture
+# Sitch — Architecture
 
 Deep reference for how the code is organized and the invariants it deliberately upholds. Read
 this before changing capture/DPI, the annotation/render pipeline, or clipboard/share. For *what*
@@ -45,10 +45,10 @@ Citations use `File.cs` + the class/method name (not line numbers) so they survi
   flattens at full resolution — this is the only place redactions become destructive pixels.
   Prefer solid block / stripes for real secrets (opaque ink; blur/pixelate are filters).
 
-## Module map (`src/WinSitch/`)
+## Module map (`windows/Sitch/`)
 
 Namespaces mirror folders. Root: `App.xaml`/`App.xaml.cs` (entry point, arg + IPC routing,
-capture orchestration, window management), `app.manifest` (PMv2), `WinSitch.csproj`.
+capture orchestration, window management), `app.manifest` (PMv2), `Sitch.csproj`.
 
 - **`Capture/`** — freeze-frame engine. `Native.cs` (hand-written Win32/GDI/DWM/DPI P/Invoke),
   `MonitorInfoProvider` (`MonitorData`, physical bounds + DPI, primary-first ordering),
@@ -73,7 +73,7 @@ capture orchestration, window management), `app.manifest` (PMv2), `WinSitch.cspr
 - **`Themes/`** — `Common.xaml` (theme-independent styles/templates), `Dark.xaml`, `Light.xaml`
   (brush palettes). `App.xaml` merges the active theme at `MergedDictionaries[0]` (the swappable
   slot) + `Common.xaml` at `[1]`.
-- **`Assets/`** — `winsitch.ico` (app/tray/window icon).
+- **`Assets/`** — `sitch.ico` (app/tray/window icon).
 
 ## Capture flow
 
@@ -119,9 +119,15 @@ capture orchestration, window management), `app.manifest` (PMv2), `WinSitch.cspr
 ## Persistence
 
 Mutate the static `App.Settings` (an `AppSettings`), then call `SettingsStore.Save(App.Settings)`.
-`SettingsStore` writes indented JSON to `%APPDATA%\WinSitch\settings.json` via a `.tmp` +
+`SettingsStore` writes indented JSON to `%APPDATA%\Sitch\settings.json` via a `.tmp` +
 `File.Move(overwrite)` atomic swap; `Load()` returns defaults on a missing/corrupt file and sets
 `FirstRun`. All persistence is best-effort (exceptions swallowed).
+
+**Rebrand migration (WinSitch → Sitch, 0.2.0).** If the new settings file is missing, `Load()`
+first *copies* `%APPDATA%\WinSitch\settings.json` across (copy, so a still-running old exe isn't
+broken). `StartupManager.MigrateLegacy()` replaces a `WinSitch` HKCU Run entry with a `Sitch` one,
+preserving its Task-Manager enabled/disabled state. Mutex/pipe names changed, so an old WinSitch
+and a new Sitch can run side by side — the second to start loses the hotkey registration.
 
 ## License guardrail
 

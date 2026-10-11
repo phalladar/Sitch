@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="src/WinSitch/Assets/winsitch.ico" width="80" alt="WinSitch — Skitch alternative for Windows (screenshot annotation tool)"/>
+<img src="windows/Sitch/Assets/sitch.ico" width="80" alt="Sitch — Skitch alternative for Windows (screenshot annotation tool)"/>
 
-# WinSitch — Skitch for Windows
+# Sitch — Skitch for Windows
 
 **The Skitch alternative for Windows.** Capture any region, window or full screen, mark it up
 with the iconic tapered arrow, and share it — in seconds, offline, for free.
@@ -12,9 +12,10 @@ with the iconic tapered arrow, and share it — in seconds, offline, for free.
 [![.NET 10 WPF](https://img.shields.io/badge/.NET%2010-WPF-512bd4)](#building-from-source)
 [![Single-file exe](https://img.shields.io/badge/standalone-single%20exe-28a745)](#download)
 
-### [⬇️ Download WinSitch.exe](https://github.com/phalladar/winsitch/releases/latest/download/WinSitch.exe)
+### [⬇️ Download Sitch for Windows](https://github.com/phalladar/sitch/releases/latest/download/WinSitch.exe)
 
 One standalone file. No installer, no .NET to install — download and run.
+*(Formerly **WinSitch**.)*
 
 *Capture. Annotate. Share.* — [Screenshots ↓](#screenshots)
 
@@ -29,7 +30,7 @@ Mac version was abandoned after 2020. If you've been googling *"Skitch for Windo
 *"Skitch alternative for Windows"*, or *"Evernote Skitch replacement"* — this is that tool,
 rebuilt natively for the Windows you use today.
 
-WinSitch is a free, open-source (MIT) screenshot annotation tool that keeps everything people
+Sitch is a free, open-source (MIT) screenshot annotation tool that keeps everything people
 loved about Skitch:
 
 - 📸 **Snap-and-mark-up flow** — press a hotkey, drag a region, and the shot opens straight in
@@ -75,8 +76,8 @@ non-destructive Crop with aspect-ratio presets
 
 ## Download
 
-**[⬇️ Download WinSitch.exe](https://github.com/phalladar/winsitch/releases/latest/download/WinSitch.exe)**
-(also on the [Releases page](https://github.com/phalladar/winsitch/releases)) — a single
+**[⬇️ Download Sitch for Windows](https://github.com/phalladar/sitch/releases/latest/download/WinSitch.exe)**
+(also on the [Releases page](https://github.com/phalladar/sitch/releases)) — a single
 self-contained ~86 MB file with the .NET runtime baked in. Run it; it lives in your system tray.
 That's the whole install. Delete the file to uninstall.
 
@@ -86,10 +87,10 @@ That's the whole install. Delete the file to uninstall.
 ## Building from source
 
 ```powershell
-git clone https://github.com/phalladar/winsitch
-cd winsitch
-dotnet publish src/WinSitch/WinSitch.csproj -c Release -r win-x64 -o publish
-# → publish/WinSitch.exe  (self-contained single file)
+git clone https://github.com/phalladar/sitch
+cd sitch
+dotnet publish windows/Sitch/Sitch.csproj -c Release -r win-x64 -o publish
+# → publish/Sitch.exe  (self-contained single file)
 ```
 
 Requires the [.NET 10 SDK](https://dotnet.microsoft.com/download). No other dependencies.
@@ -111,9 +112,9 @@ Requires the [.NET 10 SDK](https://dotnet.microsoft.com/download). No other depe
 Left-click the tray icon to capture; right-click it for window capture, full-screen per
 display, quick capture, the timer, and Settings.
 
-## WinSitch vs. Skitch
+## Sitch vs. Skitch
 
-| | Skitch (Evernote) | **WinSitch** |
+| | Skitch (Evernote) | **Sitch** |
 |---|---|---|
 | Windows support | ❌ discontinued Jan 2016 | ✅ Windows 10 & 11 |
 | Tapered arrows | ✅ | ✅ (+3 more styles, double-headed) |
@@ -130,7 +131,7 @@ Evernote bought Skitch in 2011, killed the Windows, iOS and Android versions in 
 and shipped the Mac version's last meaningful update in 2020. It never got an Apple Silicon
 build and now crashes on modern macOS.
 
-**Is WinSitch really free?**
+**Is Sitch really free?**
 Yes — free and MIT-licensed. No accounts, no subscription, no "pro" tier, no tracking.
 
 **Does it work on Windows 11? Windows 10?**
@@ -142,7 +143,7 @@ span monitors with different scale factors.
 
 **How do I hide passwords or secrets in a screenshot?**
 Use the Obscure tool. For real secrets prefer **solid block or stripes** — blur and pixelation
-are filters and can sometimes be partially reversed. WinSitch flattens redactions into the
+are filters and can sometimes be partially reversed. Sitch flattens redactions into the
 pixels when you export, so nothing can be "un-hidden" from the file.
 
 **Can I change the capture hotkey?**
@@ -174,7 +175,7 @@ remake [iSkitch](https://iskitch.com), and the open-source annotation-tool ecosy
 *The editor — dark theme, with the signature tapered arrow, highlighter, pixelate redaction and
 a numbered-workflow stamp:*
 
-![WinSitch screenshot editor in dark mode — Skitch-style tapered arrow, highlighter and pixelate redaction on Windows](docs/assets/editor-dark.png)
+![Sitch screenshot editor in dark mode — Skitch-style tapered arrow, highlighter and pixelate redaction on Windows](docs/assets/editor-dark.png)
 
 *Region capture — frozen-screen picker with dimming and a live pixel-size readout:*
 
@@ -186,17 +187,17 @@ a numbered-workflow stamp:*
 
 *Light theme:*
 
-![WinSitch screenshot annotation editor in light mode on Windows 11](docs/assets/editor-light.png)
+![Sitch screenshot annotation editor in light mode on Windows 11](docs/assets/editor-light.png)
 
 *Settings — the capture hotkey is fully configurable:*
 
-![WinSitch settings — configurable screenshot hotkey, formats and after-capture actions](docs/assets/settings.png)
+![Sitch settings — configurable screenshot hotkey, formats and after-capture actions](docs/assets/settings.png)
 
 ---
 
 <div align="center">
 
-**WinSitch** — screenshot annotation for Windows: capture, annotate & share.
+**Sitch** — screenshot annotation for Windows: capture, annotate & share.
 A free, open-source Skitch replacement. MIT © 2026 Josh Auriemma
 
 </div>
