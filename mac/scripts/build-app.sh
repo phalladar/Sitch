@@ -59,6 +59,27 @@ cat > "$APP/Contents/Info.plist" <<EOF
     <string>public.app-category.graphics-design</string>
     <key>LSUIElement</key>
     <true/>
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeName</key>
+            <string>Image</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>public.png</string>
+                <string>public.jpeg</string>
+                <string>public.tiff</string>
+                <string>public.heic</string>
+                <string>org.webmproject.webp</string>
+                <string>com.compuserve.gif</string>
+                <string>com.microsoft.bmp</string>
+            </array>
+        </dict>
+    </array>
     <key>NSHumanReadableCopyright</key>
     <string>© 2026 Josh Auriemma. MIT License.</string>
     <key>NSPrincipalClass</key>
