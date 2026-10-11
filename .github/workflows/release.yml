@@ -1,0 +1,126 @@
+name: Release
+
+# Push a tag like v0.2.0 to build Sitch.exe (Windows) and a signed, notarized Sitch-macOS.zip and
+# publish them as ONE release. Both platforms share the repo's "Latest" release, so every release
+# must carry every platform's asset or a releases/latest/download link breaks. Tags with a suffix
+# (v0.2.0-rc1) publish as pre-releases, which never become Latest.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Check the four Windows version stamps match the tag
+        run: |
+          V="${GITHUB_REF_NAME#v}"; V="${V%%-*}"
+          FAIL=0
+          check() { grep -qF "$2" "$1" || { echo "::error file=$1::expected '$2' for tag $GITHUB_REF_NAME"; FAIL=1; }; }
+          check windows/Sitch/Sitch.csproj "<Version>$V</Version>"
+          check windows/Sitch/app.manifest "version=\"$V.0\""
+          check windows/Sitch/Shell/TrayController.cs "Sitch $V"
+          check windows/Sitch/Editor/SettingsWindow.xaml "Sitch $V"
+          exit $FAIL
+
+      - run: dotnet publish windows/Sitch/Sitch.csproj -c Release -r win-x64 -o publish
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: windows
+          path: publish/Sitch.exe
+          if-no-files-found: error
+
+  mac:
+    # Pinned to match build-mac.yml.
+    runs-on: macos-26
+    timeout-minutes: 30
+    env:
+      SIGN_IDENTITY: "Developer ID Application: Mind Meat Machine, LLC (G99WQY2ZW3)"
+    defaults:
+      run:
+        working-directory: mac
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Import signing certificate
+        env:
+          P12_BASE64: ${{ secrets.DEVELOPER_ID_P12_BASE64 }}
+          P12_PASSWORD: ${{ secrets.DEVELOPER_ID_P12_PASSWORD }}
+        run: |
+          KEYCHAIN="$RUNNER_TEMP/signing.keychain-db"
+          KEYCHAIN_PASSWORD="$(uuidgen)"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+
+          # The certificate has no CA Issuers URL, so codesign can't fetch the intermediate itself.
+          for CA in DeveloperIDCA DeveloperIDG2CA; do
+            curl -fsSL -o "$RUNNER_TEMP/$CA.cer" "https://www.apple.com/certificateauthority/$CA.cer"
+            security import "$RUNNER_TEMP/$CA.cer" -k "$KEYCHAIN"
+          done
+
+          printf '%s' "$P12_BASE64" | base64 --decode > "$RUNNER_TEMP/developer-id.p12"
+          security import "$RUNNER_TEMP/developer-id.p12" -k "$KEYCHAIN" -P "$P12_PASSWORD" -T /usr/bin/codesign
+          rm "$RUNNER_TEMP/developer-id.p12"
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security list-keychains -d user -s "$KEYCHAIN" $(security list-keychains -d user | tr -d '"')
+
+      - name: Build and sign
+        # CFBundleShortVersionString must be numeric, so drop any -rcN suffix.
+        run: |
+          V="${GITHUB_REF_NAME#v}"
+          UNIVERSAL=1 VERSION="${V%%-*}" ./scripts/build-app.sh
+
+      - name: Launch smoke test
+        run: ./scripts/smoke-test.sh .build/Sitch.app/Contents/MacOS/Sitch
+
+      - name: Notarize
+        env:
+          NOTARY_API_KEY: ${{ secrets.NOTARY_API_KEY }}
+          NOTARY_KEY_ID: ${{ secrets.NOTARY_KEY_ID }}
+          NOTARY_ISSUER_ID: ${{ secrets.NOTARY_ISSUER_ID }}
+        run: |
+          export NOTARY_KEY_PATH="$RUNNER_TEMP/notary-key.p8"
+          printf '%s\n' "$NOTARY_API_KEY" > "$NOTARY_KEY_PATH"
+          ./scripts/notarize.sh Sitch-macOS.zip
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: mac
+          path: mac/Sitch-macOS.zip
+          if-no-files-found: error
+
+  publish:
+    needs: [windows, mac]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          merge-multiple: true
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Fixed asset names keep releases/latest/download/<name> stable. WinSitch.exe is the same
+          # exe under its pre-rebrand name, for download links already in the wild.
+          cp Sitch.exe WinSitch.exe
+          FLAGS=()
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then FLAGS+=(--prerelease); fi
+          gh release create "$GITHUB_REF_NAME" Sitch.exe WinSitch.exe Sitch-macOS.zip \
+            --repo "$GITHUB_REPOSITORY" --verify-tag --generate-notes \
+            --title "Sitch ${GITHUB_REF_NAME#v}" "${FLAGS[@]}"

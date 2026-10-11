@@ -1,0 +1,33 @@
+name: Build (macOS)
+
+on:
+  push:
+    branches: [main]
+    paths: ['mac/**', '.github/workflows/build-mac.yml']
+  pull_request:
+    paths: ['mac/**', '.github/workflows/build-mac.yml']
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: mac
+
+jobs:
+  build:
+    # Pinned rather than macos-latest so runner migrations don't change the toolchain silently.
+    runs-on: macos-26
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - run: swift --version
+      - run: swift build
+      # CI links a newer SDK than local SwiftPM builds record, which can change AppKit behavior
+      # (MacDirStat v0.1.0 crashed at launch only when built in CI), so launch what CI built.
+      - name: Launch smoke test
+        run: ./scripts/smoke-test.sh "$(swift build --show-bin-path)/Sitch"

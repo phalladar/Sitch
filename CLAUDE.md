@@ -1,11 +1,15 @@
 # Sitch
 
 Free, offline, MIT-licensed screenshot-annotation tool — a native Skitch replacement (clean-room
-clone of macOS iSkitch). Formerly **WinSitch**; persisted names migrate on first run (see
-`SettingsStore.Load`, `StartupManager.MigrateLegacy`). The Windows app lives in `windows/`; a
-native Swift macOS port is planned under `mac/`. Tray-resident: global hotkey → capture (region / window /
-full screen) → editor → annotate with 14 vector tools → copy / save / drag / share. Privacy-first:
-no accounts, no network, no telemetry.
+clone of macOS iSkitch). Tray-resident: global hotkey → capture (region / window / full screen) →
+editor → annotate with 14 vector tools → copy / save / drag / share. Privacy-first: no accounts,
+no network, no telemetry. Formerly **WinSitch**; persisted names migrate on first run (see
+`SettingsStore.Load`, `StartupManager.MigrateLegacy`).
+
+**Two apps, one repo.** `windows/` is the shipping .NET/WPF app and the reference implementation;
+`mac/` is the native Swift port in progress (its own `mac/CLAUDE.md`; roadmap and C# → Swift
+mapping in `docs/MACOS_PORT.md`). Stack through Conventions below describe the Windows app;
+Versioning & release and Guardrails cover both.
 
 **Docs to consult (don't duplicate them here):**
 - `docs/ARCHITECTURE.md` — module map + the invariants the code upholds. **Read it before
@@ -71,16 +75,20 @@ no accounts, no network, no telemetry.
   editor UI, a real capture for the overlay. There is no unit-test harness to run — don't claim
   "tests pass"; say what you actually exercised.
 
-## Versioning & release (manual — no CI)
-- The version lives in **four** places that must move together: `Sitch.csproj` `<Version>`,
-  `app.manifest` `assemblyIdentity version`, `Shell/TrayController.cs` About string, and
-  `Editor/SettingsWindow.xaml` footer. Features ship as a patch bump in the 0.1.x line.
-- Cut a release: bump those four, commit, publish the exe, `cp publish/Sitch.exe publish/WinSitch.exe`, then
-  `gh release create vX.Y.Z --target main --title "Sitch X.Y.Z" --notes-file <notes> publish/Sitch.exe publish/WinSitch.exe`
-  (asset names come from the file name; a `#label` suffix only sets the display label).
-  The README download link is still `releases/latest/download/WinSitch.exe` (pre-rebrand links in the
-  wild), so every release attaches the exe under both names and just has to be "Latest". The
-  binary is unsigned (SmartScreen warns on first run).
+## Versioning & release (tag-driven CI, both platforms)
+- One version line for both apps. On Windows it lives in **four** places that must move together:
+  `Sitch.csproj` `<Version>`, `app.manifest` `assemblyIdentity version`, `Shell/TrayController.cs`
+  About string, and `Editor/SettingsWindow.xaml` footer. The Mac app takes it from the tag.
+- Cut a release: bump those four, commit, push, then push a tag `vX.Y.Z`.
+  `.github/workflows/release.yml` fails fast if the four stamps don't match the tag, builds
+  `Sitch.exe` (windows-latest) and a signed, notarized `Sitch-macOS.zip` (macos-26), and publishes
+  both in ONE release — the platforms share "Latest", so a release missing either asset would
+  break that platform's `releases/latest/download/…` link. It also attaches the exe as
+  `WinSitch.exe`, the name the README and older links download. `vX.Y.Z-rcN` tags publish as
+  pre-releases (never Latest) — use one to dry-run the pipeline.
+- Secrets (same names as MacDirStat): `DEVELOPER_ID_P12_BASE64`, `DEVELOPER_ID_P12_PASSWORD`,
+  `NOTARY_API_KEY`, `NOTARY_KEY_ID`, `NOTARY_ISSUER_ID`. The Windows exe is unsigned
+  (SmartScreen warns on first run).
 
 ## Guardrails
 - **Clean-room / GPL:** ShareX, Greenshot, Flameshot are GPL — reference their architecture, never

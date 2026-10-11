@@ -4,6 +4,12 @@ A faithful Windows clone of **iSkitch** (iskitch.com, Mac App Store id 677373349
 Internet S.L.) — itself a modern native remake of the classic Evernote **Skitch**. This spec is the
 single source of truth for *what* we build; `PLAN.md` covers *how*.
 
+**Two platforms.** Written for Windows; the macOS port (`mac/`, `MACOS_PORT.md`) implements the
+same spec with the platform mapping in that doc (⌘ for Ctrl, menu bar for tray, …). On the Mac,
+Sitch competes with iSkitch on its home platform, so the clean-room rule matters more: match
+behavior, never copy iSkitch's assets, copy, or UI text — and the `#FF3366` trade-dress question in
+`PLAN.md` is still open.
+
 **Cloned baseline:** iSkitch **v1.4.1** (released 2026-07-03) plus the announced-but-unshipped
 **v1.5.0** items behind a "v1.5 parity" flag. Facts below are sourced from iskitch.com (homepage,
 FAQ, support, changelog, 4 blog guides, `support.md`/`index.md` agent endpoints), the full-res

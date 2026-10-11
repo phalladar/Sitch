@@ -12,3 +12,10 @@ publish/
 # OS
 Thumbs.db
 Desktop.ini
+
+# macOS / SwiftPM (mac/)
+.build/
+.swiftpm/
+*.xcodeproj
+.DS_Store
+mac/*.zip
