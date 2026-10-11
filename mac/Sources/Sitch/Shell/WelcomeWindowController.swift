@@ -89,8 +89,8 @@ final class WelcomeWindowController: NSWindowController, NSWindowDelegate {
         let stack = NSStackView(views: [
             header,
             line("Press  \(hotkey)  to capture — drag a region or click a window.", bold: true),
-            line("Sitch lives in your menu bar: click the pink arrow to capture, or open its menu for "
-                 + "window capture, full screen, timers and Settings."),
+            line("Sitch lives in your menu bar: click the pink arrow for window and full-screen "
+                 + "capture, quick capture to clipboard or file, and Settings."),
             line("Every capture is copied to your clipboard automatically, ready to paste."),
             permissionStatus,
             permissionButton,

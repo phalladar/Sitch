@@ -187,7 +187,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
         return page([
             section("Appearance"), themeRow,
             section("Behavior"), dock, loginBox,
-            note("Sitch lives in your menu bar — click the pink arrow to capture, or use the menu for everything else."),
+            note("Sitch lives in your menu bar — click the pink arrow for every capture mode, quick capture and settings."),
         ])
     }
 
