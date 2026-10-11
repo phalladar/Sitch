@@ -1,27 +1,43 @@
 import AppKit
+import SitchCore
 
-/// Placeholder editor window: proves window lifecycle, native tabbing and the Dock-icon toggle.
-/// The real editor (canvas, 14-tool rail, options) ports windows/Sitch/Editor in a later phase.
+/// STUB — replaced by the Editor port. Public surface below is the contract other modules use.
 @MainActor
 final class EditorWindowController: NSWindowController, NSWindowDelegate {
-    var onClose: (() -> Void)?
+    /// (Not `document`: NSWindowController already has one.)
+    private(set) var doc: Document
+    private(set) var docName: String
 
-    init() {
-        let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 960, height: 640),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable],
-            backing: .buffered, defer: false)
-        window.title = "Untitled — Sitch"
-        // Native window tabs stand in for the Windows editor's tab strip.
-        window.tabbingIdentifier = "SitchEditor"
-        window.tabbingMode = .preferred
-        window.isReleasedWhenClosed = false
-        window.center()
-        super.init(window: window)
-        window.delegate = self
+    init(image: CGImage, title: String, pointScale: CGFloat) {
+        doc = Document(base: image, pointScale: pointScale)
+        self.docName = title
+        super.init(window: nil)
+    }
+
+    /// Used by --demo: a prepared document (annotations already placed).
+    init(document: Document, title: String) {
+        self.doc = document
+        self.docName = title
+        super.init(window: nil)
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) is not used") }
 
-    func windowWillClose(_ notification: Notification) { onClose?() }
+    /// Size/position (on the display `sourceRect` came from, global top-left points), show, activate.
+    func present(sourceRect: CGRect?) {}
+
+    /// Opens `editor` as a native tab of this window (New Capture from inside an editor).
+    func addTab(_ editor: EditorWindowController) {}
+
+    /// Unsaved, non-pristine changes.
+    var needsSavePrompt: Bool { doc.dirty && !doc.isPristine }
+
+    /// Save prompt; false means the user cancelled the close.
+    func confirmClose() -> Bool { true }
+
+    /// Close after the caller already ran confirmClose (quit flow).
+    func closeWithoutPrompt() {}
+
+    /// --demo-crop: open straight into crop mode.
+    func enterCropMode() {}
 }
