@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skitch Alternative for Mac (Apple Silicon) — Free | Sitch</title>
+<meta name="description" content="Skitch for Mac is Intel-only and unmaintained. Sitch is a free, open-source, native Skitch alternative for Apple Silicon and Intel Macs: tapered arrows, blur, pixelate.">
+<link rel="canonical" href="https://phalladar.github.io/Sitch/skitch-for-mac/">
+<link rel="icon" type="image/png" href="../icon-256.png">
+<link rel="stylesheet" href="../style.css">
+<meta name="theme-color" content="#ff3366">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sitch">
+<meta property="og:title" content="A native Skitch for Apple Silicon Macs — free, as Sitch">
+<meta property="og:description" content="The Skitch screenshot-annotation workflow, rebuilt in Swift for modern macOS. Signed, notarized, free, open source.">
+<meta property="og:url" content="https://phalladar.github.io/Sitch/skitch-for-mac/">
+<meta property="og:image" content="https://phalladar.github.io/Sitch/assets/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Sitch for Mac",
+  "description": "Free, open-source Skitch alternative for macOS 15 and later on Apple Silicon and Intel: screenshot capture and annotation with tapered arrows, text, shapes, blur and pixelate.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "macOS 15 or later",
+  "url": "https://phalladar.github.io/Sitch/skitch-for-mac/",
+  "downloadUrl": "https://github.com/phalladar/sitch/releases/latest/download/Sitch.dmg",
+  "screenshot": "https://phalladar.github.io/Sitch/assets/editor-mac.png",
+  "license": "https://opensource.org/licenses/MIT",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="../"><img src="../icon-256.png" alt="" width="32" height="32">Sitch</a>
+    <nav>
+      <a href="../skitch-for-windows/">Windows</a>
+      <a class="gh" href="https://github.com/phalladar/Sitch">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>A native <em>Skitch for Mac</em>,<br>built for Apple Silicon</h1>
+      <p class="lede">Skitch for Mac hasn't been updated since 2020 and only runs on Apple Silicon through
+        Rosetta 2, which Apple is phasing out after macOS 27. Sitch is the same snap-and-mark-up
+        workflow, rewritten in Swift for modern macOS. Free and open source.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/phalladar/sitch/releases/latest/download/Sitch.dmg">Download Sitch for Mac</a>
+      </div>
+      <p class="fine">macOS 15 Sequoia or later · universal (Apple Silicon + Intel) · signed &amp; notarized by Apple</p>
+      <div class="shot">
+        <img src="../assets/editor-mac.png" width="1500" height="1040"
+             alt="Sitch on macOS: a Skitch-style tapered arrow and pixelated redactions on a screenshot">
+      </div>
+    </div>
+
+    <section>
+      <h2>How to annotate a screenshot on a Mac with Sitch</h2>
+      <ol>
+        <li>Open <strong>Sitch.dmg</strong> and drag Sitch to Applications. It lives in the menu bar.</li>
+        <li>On first launch, grant <strong>Screen Recording</strong> permission when asked (macOS requires it for every screenshot app).</li>
+        <li>Press <kbd>⌘⌥4</kbd>. Drag over a region, or click a window to capture just that window.</li>
+        <li>Draw a tapered arrow, add text or a box, and use <strong>Obscure</strong> to pixelate or block out anything private.</li>
+        <li>Press <kbd>⌘C</kbd> and paste into Slack, Messages or Mail — or drag the image out, or use the share sheet.</li>
+      </ol>
+      <p><kbd>⌘⌥⇧4</kbd> recaptures the last region; <kbd>⌃⌥⌘4</kbd> captures straight to the clipboard
+        without opening the editor. Prefer the built-in <kbd>⌘⇧4</kbd>? Sitch can open the editor
+        automatically after any system screenshot.</p>
+    </section>
+
+    <section>
+      <h2>Why not just use Markup or CleanShot X?</h2>
+      <p>macOS <strong>Markup</strong> is built in, but it has no pixelate or blur and only basic arrows, and it routes through
+        the screenshot thumbnail or Preview. <strong>CleanShot X</strong> is excellent but paid and Mac-only. Sitch is free,
+        open source, gets you from hotkey to annotated image in one step, and works identically on Windows
+        if your team uses both.</p>
+      <p><a href="../#compare">See the full comparison →</a></p>
+    </section>
+
+    <section>
+      <h2>FAQ</h2>
+      <details open><summary>Does Sitch run natively on M1, M2, M3 and M4 Macs?</summary><p>Yes. It's a universal binary — native on Apple Silicon and Intel, no Rosetta required.</p></details>
+      <details><summary>Why does Sitch need Screen Recording permission?</summary><p>macOS requires it for any app that reads the screen. Sitch uses it only to capture what you select; it makes no network connections.</p></details>
+      <details><summary>Which macOS versions are supported?</summary><p>macOS 15 Sequoia or later.</p></details>
+      <details><summary>Can I import my old Skitch files?</summary><p>Sitch opens any PNG, JPEG or TIFF image for annotation, including images you exported from Skitch.</p></details>
+    </section>
+  </main>
+
+  <footer>
+    <p><a href="../">Sitch home</a> · <a href="../skitch-for-windows/">Sitch for Windows</a> · <a href="https://github.com/phalladar/Sitch">Source on GitHub</a></p>
+    <p>Sitch is not affiliated with Evernote or Skitch. MIT © 2026 Josh Auriemma.</p>
+  </footer>
+</div>
+</body>
+</html>

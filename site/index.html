@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sitch — Free Skitch Alternative for Windows &amp; Mac</title>
+<meta name="description" content="Free, open-source Skitch replacement for Windows 10/11 and macOS. One-hotkey capture, the classic tapered arrow, blur and pixelate. Offline, no account.">
+<link rel="canonical" href="https://phalladar.github.io/Sitch/">
+<link rel="icon" type="image/png" href="icon-256.png">
+<link rel="apple-touch-icon" href="icon-256.png">
+<link rel="stylesheet" href="style.css">
+<meta name="theme-color" content="#ff3366">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sitch">
+<meta property="og:title" content="Sitch — the free Skitch alternative for Windows & Mac">
+<meta property="og:description" content="Skitch is gone. Sitch brings it back: one-hotkey capture, tapered arrows, blur & pixelate. Free, open source, offline.">
+<meta property="og:url" content="https://phalladar.github.io/Sitch/">
+<meta property="og:image" content="https://phalladar.github.io/Sitch/assets/social-preview.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="Sitch — the Skitch alternative for Windows and Mac">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Sitch",
+  "alternateName": "WinSitch",
+  "description": "Free, open-source screenshot annotation tool for Windows and macOS. A native replacement for Evernote Skitch with region, window and full-screen capture, tapered arrows, text, shapes, blur and pixelate redaction, and export to PNG, JPEG, PDF and TIFF.",
+  "applicationCategory": "MultimediaApplication",
+  "applicationSubCategory": "Screenshot annotation",
+  "operatingSystem": "Windows 10, Windows 11, macOS 15 or later",
+  "url": "https://phalladar.github.io/Sitch/",
+  "downloadUrl": "https://github.com/phalladar/sitch/releases/latest",
+  "screenshot": "https://phalladar.github.io/Sitch/assets/editor-mac.png",
+  "image": "https://phalladar.github.io/Sitch/assets/social-preview.png",
+  "license": "https://opensource.org/licenses/MIT",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Person", "name": "Josh Auriemma" },
+  "sameAs": ["https://github.com/phalladar/Sitch"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Is there still a Skitch for Windows?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Evernote discontinued Skitch for Windows in January 2016. Sitch is a free, open-source replacement for Windows 10 and 11 with the same one-hotkey capture and tapered-arrow annotation workflow." } },
+    { "@type": "Question", "name": "Does Skitch still work on Mac?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Skitch for Mac is still listed on the App Store but has not been updated since 2020 and is Intel-only, so Apple Silicon Macs run it through Rosetta 2, which Apple is phasing out after macOS 27. Sitch is a native, universal Skitch alternative for macOS 15 and later." } },
+    { "@type": "Question", "name": "Is Sitch free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Sitch is free and MIT-licensed open source, with no account, subscription, ads or tracking." } },
+    { "@type": "Question", "name": "Does Sitch upload my screenshots?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Sitch makes no network connections. Captures stay on your computer and clipboard until you save or share them." } },
+    { "@type": "Question", "name": "How do I blur or hide sensitive information in a screenshot?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Use Sitch's Obscure tool to pixelate, blur, block out or stripe an area. For real secrets use solid block or stripes, since blur and pixelation can sometimes be partially reversed. Redactions are flattened into the pixels on export." } }
+  ]
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./"><img src="icon-256.png" alt="" width="32" height="32">Sitch</a>
+    <nav>
+      <a href="skitch-for-windows/">Windows</a>
+      <a href="skitch-for-mac/">Mac</a>
+      <a href="#compare">Compare</a>
+      <a class="gh" href="https://github.com/phalladar/Sitch">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>The free <em>Skitch alternative</em><br>for Windows &amp; Mac</h1>
+      <p class="lede">Skitch is gone. Sitch brings it back: press a hotkey, drag over anything,
+        add the classic tapered arrow, blur the secrets, and paste it anywhere — in seconds.
+        Free, open source, and fully offline.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/phalladar/sitch/releases/latest/download/WinSitch.exe">Download for Windows</a>
+        <a class="btn primary" href="https://github.com/phalladar/sitch/releases/latest/download/Sitch.dmg">Download for Mac</a>
+      </div>
+      <p class="fine">Windows 10/11: one portable .exe, no installer · macOS 15+: signed, notarized, Apple Silicon + Intel</p>
+      <div class="shot">
+        <img src="assets/editor-mac.png" width="1500" height="1040"
+             alt="Sitch screenshot annotation editor with a Skitch-style tapered arrow, a highlight and pixelated redactions">
+      </div>
+    </div>
+
+    <section id="why">
+      <h2>Everything you loved about Skitch</h2>
+      <div class="grid">
+        <div class="card"><h3>One hotkey, no dialogs</h3><p><kbd>Ctrl+Alt+4</kbd> or <kbd>⌘⌥4</kbd>, drag a region or click a window, and you're annotating. Every capture is already on your clipboard.</p></div>
+        <div class="card"><h3>The tapered arrow</h3><p>Thick at the base, fine at the tip — plus filled, open, concave and double-headed styles.</p></div>
+        <div class="card"><h3>Redact properly</h3><p>Pixelate, blur, solid block or stripes, flattened into the pixels on export so nothing can be un-hidden.</p></div>
+        <div class="card"><h3>Private by design</h3><p>No account, no cloud, no upload links, no telemetry. Sitch makes no network connections at all.</p></div>
+        <div class="card"><h3>Truly native</h3><p>WPF on Windows, Swift and AppKit on the Mac. Not Electron, not a web wrapper.</p></div>
+        <div class="card"><h3>Share any way you like</h3><p>Copy at full resolution, drag straight into Slack or Mail, use the share sheet, or export PNG, JPEG, PDF or TIFF.</p></div>
+      </div>
+    </section>
+
+    <section id="tools">
+      <h2>14 annotation tools</h2>
+      <p>Select · <strong>Arrow</strong> · Text (any font, re-editable) · Rectangle · Ellipse · Line ·
+        Highlighter · <strong>Obscure</strong> (pixelate / blur / block / stripes) · Stamps (✓ ✕ ★ and
+        auto-numbered steps) · Pen · <strong>Spotlight</strong> · Emoji stickers · Image overlay ·
+        non-destructive Crop. Every mark stays editable until you export, with full undo and redo.</p>
+      <div class="gallery">
+        <figure><img src="assets/editor-dark.png" loading="lazy" width="1619" height="1130" alt="Sitch editor on Windows 11, dark theme"><figcaption>Windows, dark theme</figcaption></figure>
+        <figure><img src="assets/region-capture.png" loading="lazy" width="1500" height="950" alt="Sitch region capture overlay with live pixel size"><figcaption>Freeze-frame region capture</figcaption></figure>
+        <figure><img src="assets/crop-mode.png" loading="lazy" width="1619" height="1130" alt="Sitch non-destructive crop with aspect ratio presets"><figcaption>Non-destructive crop</figcaption></figure>
+        <figure><img src="assets/editor-light.png" loading="lazy" width="1619" height="1130" alt="Sitch editor in light theme"><figcaption>Light theme</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="compare">
+      <h2>Sitch vs. Skitch, Snagit, CleanShot X, ShareX &amp; Lightshot</h2>
+      <div class="table-scroll">
+      <table>
+        <thead><tr><th></th><th>Windows</th><th>Mac</th><th>Price</th><th>Open source</th><th>Cloud uploads</th></tr></thead>
+        <tbody>
+          <tr class="us"><td>Sitch</td><td>✅</td><td>✅</td><td>Free</td><td>✅ MIT</td><td>Never</td></tr>
+          <tr><td>Skitch</td><td>❌ discontinued 2016</td><td>⚠️ Intel-only, last updated 2020</td><td>Free</td><td>❌</td><td>Evernote</td></tr>
+          <tr><td>Snagit</td><td>✅</td><td>✅</td><td>~$39/year</td><td>❌</td><td>Optional</td></tr>
+          <tr><td>CleanShot X</td><td>❌</td><td>✅</td><td>Paid</td><td>❌</td><td>Optional</td></tr>
+          <tr><td>ShareX</td><td>✅</td><td>❌</td><td>Free</td><td>✅ GPL</td><td>Optional</td></tr>
+          <tr><td>Lightshot</td><td>✅</td><td>✅</td><td>Free</td><td>❌</td><td>Public prnt.sc links</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="fine">Prices as of 2026.</p>
+    </section>
+
+    <section id="faq">
+      <h2>FAQ</h2>
+      <details open><summary>Is there still a Skitch for Windows?</summary><p>No — Evernote discontinued Skitch for Windows in January 2016. Sitch is a free, native replacement for Windows 10 and 11. <a href="skitch-for-windows/">More on Sitch for Windows →</a></p></details>
+      <details><summary>Does Skitch still work on Mac?</summary><p>Skitch for Mac hasn't been updated since 2020 and is Intel-only, so Apple Silicon Macs run it through Rosetta 2, which Apple is phasing out after macOS 27. Sitch is a native universal app. <a href="skitch-for-mac/">More on Sitch for Mac →</a></p></details>
+      <details><summary>Is Sitch really free?</summary><p>Yes. MIT-licensed open source: no account, no subscription, no pro tier, no ads, no tracking.</p></details>
+      <details><summary>Does Sitch upload my screenshots?</summary><p>No. Sitch makes no network connections. Captures stay on your computer until you save or share them.</p></details>
+      <details><summary>How do I blur or hide sensitive information in a screenshot?</summary><p>Use the Obscure tool. For real secrets prefer solid block or stripes — blur and pixelation can sometimes be partially reversed. Redactions are flattened into the pixels when you export.</p></details>
+    </section>
+  </main>
+
+  <footer>
+    <p><a href="https://github.com/phalladar/Sitch">Source on GitHub</a> · <a href="https://github.com/phalladar/sitch/releases">All releases</a> · <a href="https://github.com/phalladar/Sitch/issues">Report an issue</a></p>
+    <p>Sitch (formerly WinSitch) — free, open-source screenshot annotation for Windows and Mac. MIT © 2026 Josh Auriemma. Not affiliated with Evernote or Skitch.</p>
+  </footer>
+</div>
+</body>
+</html>

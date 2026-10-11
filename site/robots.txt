@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://phalladar.github.io/Sitch/sitemap.xml

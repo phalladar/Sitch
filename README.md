@@ -1,114 +1,121 @@
 <div align="center">
 
-<img src="windows/Sitch/Assets/sitch.ico" width="80" alt="Sitch — Skitch alternative for Windows and Mac (screenshot annotation tool)"/>
+<img src="windows/Sitch/Assets/sitch.ico" width="96" alt="Sitch app icon"/>
 
-# Sitch — Skitch for Windows and Mac
+# Sitch — the free Skitch alternative for Windows and Mac
 
-**The Skitch alternative for Windows and macOS.** Capture any region, window or full screen,
-mark it up with the iconic tapered arrow, and share it — in seconds, offline, for free.
+**Skitch is gone. This is it again.** Press a hotkey, drag over anything on screen, slap the
+iconic tapered arrow on it, blur the secrets, and paste it into Slack — in about three seconds.
+Free, open source, native on both platforms, and nothing ever leaves your computer.
 
+[![Latest release](https://img.shields.io/github/v/release/phalladar/sitch?color=ff3366&label=release)](https://github.com/phalladar/sitch/releases/latest)
 [![MIT License](https://img.shields.io/badge/license-MIT-ff3366)](LICENSE)
 [![Windows 10/11](https://img.shields.io/badge/Windows-10%20%7C%2011-0078d4)](#requirements)
-[![macOS 15+](https://img.shields.io/badge/macOS-15%2B-000000)](#requirements)
-[![Apple Silicon + Intel](https://img.shields.io/badge/Mac-Apple%20Silicon%20%2B%20Intel-555555)](#requirements)
+[![macOS 15+](https://img.shields.io/badge/macOS-15%2B%20·%20Apple%20Silicon%20%2B%20Intel-000000)](#requirements)
+[![GitHub stars](https://img.shields.io/github/stars/phalladar/sitch?style=flat&color=555555)](https://github.com/phalladar/sitch/stargazers)
 
 ### [⬇️ Download for Windows](https://github.com/phalladar/sitch/releases/latest/download/WinSitch.exe) &nbsp;·&nbsp; [⬇️ Download for Mac](https://github.com/phalladar/sitch/releases/latest/download/Sitch.dmg)
 
-**Windows:** one standalone .exe — no installer, no .NET to install.
-**Mac:** a native, signed and notarized app — open the disk image, drag to Applications.
-*(Formerly **WinSitch**.)*
+<sub>Windows: one portable .exe, no installer, no admin · Mac: signed & notarized universal app</sub>
 
-*Capture. Annotate. Share.* — [Screenshots ↓](#screenshots)
+<br/>
+
+<img src="docs/assets/editor-mac.png" width="860" alt="Sitch screenshot annotation editor on macOS: a Skitch-style tapered arrow, a highlight, a box and pixelated redactions on a dashboard screenshot"/>
 
 </div>
 
----
+## Why people switch to Sitch
 
-## Is there a Skitch for Windows? For Mac?
+- **The Skitch flow, intact.** Hotkey → drag → you're in the editor. No save dialogs, no
+  library, no file hunting. Every capture is already on your clipboard.
+- **The arrow.** The fat-to-fine tapered arrow Skitch made famous, plus filled, open, concave
+  and double-headed styles.
+- **Redact properly.** Pixelate, blur, solid block or stripes — flattened into the pixels on
+  export, so nobody can peel the redaction off your file.
+- **Private by design.** No account, no cloud, no upload links, no telemetry, no network calls.
+  Your screenshots never get a public URL.
+- **Actually native.** WPF on Windows, Swift + AppKit + ScreenCaptureKit on the Mac. No
+  Electron, no web view, no subscription.
 
-Not anymore. Evernote discontinued **Skitch for Windows in January 2016**, and the Mac version
-was abandoned after 2020 — it never got an Apple Silicon build and no longer runs properly on
-modern macOS. If you've been googling *"Skitch for Windows download"*, *"Skitch alternative for
-Mac"*, or *"Evernote Skitch replacement"* — this is that tool, rebuilt natively for both.
+> ⭐ **If Sitch fills your Skitch-shaped hole, star the repo.** Stars are how other people
+> searching for a Skitch replacement find it.
 
-Sitch is a free, open-source (MIT) screenshot annotation tool that keeps everything people
-loved about Skitch:
+## Is there still a Skitch for Windows or Mac?
 
-- 📸 **Snap-and-mark-up flow** — press a hotkey, drag a region, and the shot opens straight in
-  the editor. No dialogs, no file hunting.
-- ➹ **The iconic tapered arrow** — thick at the base, fine at the tip. Plus filled, open,
-  concave and double-headed variants.
-- 🔒 **Privacy first** — no accounts, no tracking, no telemetry, works completely offline.
-  Nothing you capture ever leaves your computer.
-- 🖥️ **Truly native on both** — WPF on Windows, Swift/AppKit on the Mac. Not a web wrapper,
-  not Electron.
+**No.** Evernote discontinued **Skitch for Windows** (along with iOS and Android) in
+**January 2016**. **Skitch for Mac** is still listed on the App Store but hasn't been updated
+since 2020 and ships as an Intel-only app, so Apple Silicon Macs run it through Rosetta 2 —
+which Apple is phasing out after macOS 27.
+
+If you landed here searching for *"Skitch for Windows download"*, *"Skitch alternative for
+Mac"* or *"Evernote Skitch replacement"* — Sitch is a clean-room rebuild of that tool, native
+on both platforms, with the same one-hotkey snap-and-mark-up workflow.
 
 ## Features
 
-**Capture**
-- One hotkey, every mode: `Ctrl+Alt+4` on Windows, `⌘⌥4` on Mac (**fully configurable**) —
-  drag a region, or just *click* a window to capture it, or pick a display from the tray /
-  menu bar
-- Keyboard capture: arrow keys define and nudge the selection, `Enter` / `Return` confirms
-- Recapture the last region with one keystroke
-- Freeze-frame picker with live size readout — correct on multi-monitor, mixed-DPI and Retina
-  setups
-- Window picker that captures clean window content even when partially covered
-- Capture timer (3/5/10 s), quick capture straight to clipboard or file
-- **Every capture is copied to the clipboard automatically** (on by default) — paste into chat
-  before you've even annotated; configurable after-capture actions: show editor / copy / save
-- Optional watcher that opens the editor after a system screenshot (`Win+PrtScn` on Windows,
-  `⌘⇧3` / `⌘⇧4` / `⌘⇧5` on Mac)
+### Capture
+- **One hotkey for everything** — `Ctrl+Alt+4` on Windows, `⌘⌥4` on Mac (configurable). Drag
+  for a region, *click* for a window, or pick a whole display from the tray / menu bar.
+- **Recapture the last region** with one keystroke — perfect for before/after shots.
+- **Quick capture to clipboard** — skip the editor entirely and just paste.
+- **Freeze-frame picker** with a live pixel-size readout and keyboard nudging (arrow keys move,
+  `Shift`+arrows resize, `Enter` confirms).
+- **Correct on multi-monitor, mixed-DPI and Retina setups** — captures true physical pixels.
+- **Clean window capture**, even when the window is partly covered.
+- Capture timer (3 / 5 / 10 s) for menus and hover states.
+- Optional watcher that opens the editor after a system screenshot (`Win+PrtScn`, or
+  `⌘⇧3` / `⌘⇧4` / `⌘⇧5`).
 
-**Annotate — 14 tools**
-Select · **Arrow** (tapered/filled/open/concave, double-headed) · Text (any system font, bold,
-italic, re-editable later) · Rectangle · Ellipse · Line · Highlighter · **Obscure**
-(pixelate / blur / solid block / stripes) · Stamps (✓ ✕ ★ ● + auto-numbering 1·2·3) · Pen ·
-**Spotlight** (dim everything but the point you're making) · Emoji stickers · Image overlay ·
-non-destructive Crop with aspect-ratio presets
+### Annotate — 14 tools
+| | |
+|---|---|
+| **Arrow** | tapered (Skitch-style), filled, open, concave; single or double-headed |
+| **Text** | any system font, bold/italic, re-editable later |
+| **Shapes** | rectangle, ellipse, line, freehand pen, highlighter |
+| **Obscure** | pixelate, blur, solid block, stripes |
+| **Spotlight** | dims everything except the thing you're pointing at |
+| **Stamps** | ✓ ✕ ★ ● and auto-numbered steps 1 · 2 · 3 for tutorials |
+| **Stickers & images** | emoji stickers, image overlays (logos, callouts) |
+| **Crop** | non-destructive, with aspect-ratio presets and a rule-of-thirds grid |
 
-- Everything stays an editable object until export — move, restyle, or delete any mark later
-- Redactions are computed from the full-resolution source and flattened only when you export
-- Full undo/redo on every change; rotate/flip with annotations following
-- Dark, light, or system theme
+Every mark stays an editable object until export: move it, restyle it, or delete it later.
+Full undo/redo, rotate/flip (annotations follow), and dark, light or system theme.
 
-**Share & export**
-- Export **PNG, JPEG, PDF, TIFF**
-- Copy to clipboard at full resolution — high-DPI shots paste pixel-perfect
-- **Drag the image out** of the editor straight into Slack, Teams, Mail, or any app
+### Share & export
+- **PNG, JPEG, PDF, TIFF** export
+- **Copy at full resolution** — high-DPI shots paste pixel-perfect
+- **Drag the image out** of the editor straight into Slack, Teams, Mail, Jira, a browser tab…
 - Native **share sheet** on both platforms
 - Never saves silently — you always choose where files go
 
-## Download
+## Download & install
 
-Both downloads are on the [Releases page](https://github.com/phalladar/sitch/releases).
-
-### Windows
-
+### Windows 10 / 11
 **[⬇️ Download Sitch for Windows](https://github.com/phalladar/sitch/releases/latest/download/WinSitch.exe)**
-— a single self-contained ~86 MB file with the .NET runtime baked in. Run it; it lives in your
-system tray. That's the whole install. Delete the file to uninstall.
+— a single portable ~86 MB `.exe` with the .NET runtime built in. Run it and it lives in your
+system tray. That's the whole install; delete the file to uninstall. No admin rights needed.
 
-> Windows SmartScreen may warn on first run (the build is currently unsigned). Choose
-> *More info → Run anyway*, or build it from source below.
+> The build isn't code-signed yet, so Windows SmartScreen may warn on first run: choose
+> *More info → Run anyway*, or [build it from source](#building-from-source).
 
-### Mac
-
+### macOS 15+ (Apple Silicon & Intel)
 **[⬇️ Download Sitch for Mac](https://github.com/phalladar/sitch/releases/latest/download/Sitch.dmg)**
-— open the disk image and drag Sitch to Applications. It's a universal app (Apple Silicon and
-Intel), signed and notarized by Apple, so it opens without Gatekeeper warnings. Sitch lives in
-your menu bar; on first launch it walks you through granting **Screen Recording** permission
-(System Settings ▸ Privacy & Security), which macOS requires for any screenshot app.
-A plain [.zip](https://github.com/phalladar/sitch/releases/latest/download/Sitch-macOS.zip)
-of the app is also available.
+— open the disk image and drag Sitch to Applications. It's a universal app, **signed and
+notarized by Apple**, so it opens without Gatekeeper warnings. Sitch lives in your menu bar;
+on first launch it walks you through granting **Screen Recording** permission, which macOS
+requires for every screenshot app. A plain
+[.zip](https://github.com/phalladar/sitch/releases/latest/download/Sitch-macOS.zip) is also
+available.
 
-## Usage
+All versions and release notes: [Releases](https://github.com/phalladar/sitch/releases).
+
+## Keyboard shortcuts
 
 | Action | Windows | Mac |
 |---|---|---|
 | Capture (drag = region, click = window) | `Ctrl+Alt+4` | `⌘⌥4` |
 | Recapture last region | `Ctrl+Alt+Shift+4` | `⌘⌥⇧4` |
-| Quick capture to clipboard (skips the editor) | `Ctrl+Alt+Shift+C` | `⌃⌥⌘4` |
+| Quick capture to clipboard (skip the editor) | `Ctrl+Alt+Shift+C` | `⌃⌥⌘4` |
 | Keyboard capture in the overlay | arrows move · `Shift`+arrows resize · `Enter` confirms | arrows move · `⇧`+arrows resize · `⌥` for 10-pt steps · `Return` confirms |
 | Undo / Redo | `Ctrl+Z` / `Ctrl+Y` | `⌘Z` / `⌘⇧Z` |
 | Copy flattened image | `Ctrl+C` / `Ctrl+Shift+C` | `⌘C` |
@@ -117,66 +124,103 @@ of the app is also available.
 | Crop: apply / cancel | `Enter` / `Esc` | `Return` / `Esc` |
 | Straight lines / squares while drawing | hold `Shift` | hold `⇧` |
 
-All three capture hotkeys are configurable in Settings ▸ Capture.
-
-**Windows:** left-click the tray icon to capture; right-click it for window capture, full-screen
-per display, quick capture, the timer, and Settings.
-**Mac:** click the menu-bar icon for region, window and full-screen capture, quick capture,
-and Settings.
+All three capture hotkeys are configurable in **Settings ▸ Capture**.
+**Windows:** left-click the tray icon to capture; right-click for window, full-screen per
+display, quick capture, the timer and Settings. **Mac:** click the menu-bar icon.
 
 ## Sitch vs. Skitch
 
 | | Skitch (Evernote) | **Sitch** |
 |---|---|---|
-| Windows support | ❌ discontinued Jan 2016 | ✅ Windows 10 & 11 |
-| Mac support | ⚠️ abandoned, no Apple Silicon build | ✅ macOS 15+, universal (Apple Silicon + Intel) |
-| Tapered arrows | ✅ | ✅ (+3 more styles, double-headed) |
-| Pixelate | ✅ | ✅ + blur, solid block, stripes |
-| Spotlight, stickers, numbered stamps | ❌ | ✅ |
-| Account required | Evernote | **None** |
-| Cloud upload | forced | **Never** — fully offline |
-| Price | — | **Free, MIT open source** |
+| Windows | ❌ discontinued January 2016 | ✅ Windows 10 & 11 |
+| Mac | ⚠️ last updated 2020, Intel-only (Rosetta 2) | ✅ macOS 15+, native Apple Silicon + Intel |
+| Tapered arrow | ✅ | ✅ plus 3 more styles and double-headed |
+| Pixelate | ✅ | ✅ plus blur, solid block, stripes |
+| Spotlight, stickers, numbered steps | ❌ | ✅ |
+| Account | Evernote-oriented | **None, ever** |
+| Price / license | free, closed source | **free, MIT open source** |
+
+## Sitch vs. other screenshot tools
+
+Looking for a **Snagit alternative**, **ShareX for Mac**, **CleanShot X for Windows**, or a
+**Lightshot alternative that doesn't upload your screenshots**? Here's how they compare
+(prices as of 2026):
+
+| | Windows | Mac | Price | Open source | Uploads to a cloud |
+|---|:-:|:-:|---|:-:|---|
+| **Sitch** | ✅ | ✅ | **Free** | ✅ MIT | **Never** |
+| Snagit | ✅ | ✅ | ~$39 / year subscription | ❌ | optional |
+| CleanShot X | ❌ | ✅ | paid licence | ❌ | optional |
+| ShareX | ✅ | ❌ | free | ✅ GPL | optional |
+| Greenshot | ✅ | paid App Store app | free on Windows | ✅ GPL | optional |
+| Lightshot | ✅ | ✅ | free | ❌ | public `prnt.sc` links |
+| Snipping Tool / Markup | Windows only | Mac only | built in | ❌ | no |
+
+Sitch isn't trying to be a screen recorder or a cloud-sharing service. It does one thing —
+**fast, private screenshot annotation** — and does it identically on both platforms.
 
 ## FAQ
 
 **What happened to Skitch?**
-Evernote bought Skitch in 2011, killed the Windows, iOS and Android versions in January 2016,
-and shipped the Mac version's last meaningful update in 2020. It never got an Apple Silicon
-build and now crashes on modern macOS.
+Evernote bought Skitch in 2011, ended the Windows, iOS and Android versions in January 2016,
+and stopped updating the Mac version in 2020. It never got a native Apple Silicon build.
 
-**Is Sitch really free?**
-Yes — free and MIT-licensed. No accounts, no subscription, no "pro" tier, no tracking.
+**Is Sitch really free? What's the catch?**
+No catch. It's MIT-licensed open source: no account, no subscription, no "pro" tier, no ads,
+no tracking.
 
-**Which versions of Windows and macOS does it support?**
-Windows 10 version 1903 or later, and every Windows 11 release. macOS 15 Sequoia or later, on
-both Apple Silicon and Intel Macs.
+**How do I add an arrow to a screenshot on Windows or Mac?**
+Press `Ctrl+Alt+4` (Windows) or `⌘⌥4` (Mac), drag over the area, and the editor opens with the
+Arrow tool ready. Drag from the tail to the tip. Press `Ctrl+C` / `⌘C` to copy the result.
+
+**How do I blur or hide passwords and personal info in a screenshot?**
+Use the **Obscure** tool. For real secrets prefer **solid block or stripes** — blur and
+pixelation are filters and can sometimes be partially reversed. Sitch flattens redactions into
+the pixels when you export, so nothing can be "un-hidden" from the saved file.
+
+**Does Sitch upload my screenshots anywhere?**
+No. Sitch makes no network connections at all. Captures stay in memory and on your clipboard
+until *you* save or share them.
+
+**Which versions of Windows and macOS are supported?**
+Windows 10 version 1903 or later and all Windows 11 releases (x64). macOS 15 Sequoia or later,
+on both Apple Silicon and Intel Macs.
 
 **Why does the Mac version ask for Screen Recording permission?**
 macOS requires it for any app that reads the screen, including every screenshot tool. Sitch
-uses it only to capture what you select — nothing is recorded, uploaded or stored without you
-saving it.
+uses it only to capture what you select.
 
 **Does it handle multiple monitors and display scaling?**
 Yes — capture grabs true physical pixels on mixed-DPI Windows setups and Retina Macs alike.
 
-**How do I hide passwords or secrets in a screenshot?**
-Use the Obscure tool. For real secrets prefer **solid block or stripes** — blur and pixelation
-are filters and can sometimes be partially reversed. Sitch flattens redactions into the
-pixels when you export, so nothing can be "un-hidden" from the file.
-
 **Can I change the capture hotkey?**
 Yes — Settings ▸ Capture, click the shortcut field, and press any combination.
 
+**Is this the same project as WinSitch?**
+Yes. Sitch was called **WinSitch** while it was Windows-only; it was renamed when the Mac app
+shipped in v0.2.0. Existing settings migrate automatically.
+
+## Screenshots
+
+<table>
+<tr>
+<td width="50%"><img src="docs/assets/editor-dark.png" alt="Sitch screenshot editor on Windows 11 in dark mode with a tapered arrow, highlighter and pixelate redaction"/><br/><sub><b>Windows editor, dark theme</b> — tapered arrow, highlighter, pixelate, stamps</sub></td>
+<td width="50%"><img src="docs/assets/editor-light.png" alt="Sitch screenshot annotation editor in light mode on Windows 11"/><br/><sub><b>Light theme</b></sub></td>
+</tr>
+<tr>
+<td><img src="docs/assets/region-capture.png" alt="Sitch region capture overlay: frozen, dimmed screen with a live pixel-size readout"/><br/><sub><b>Region capture</b> — frozen screen, live size readout</sub></td>
+<td><img src="docs/assets/crop-mode.png" alt="Sitch non-destructive crop with aspect-ratio presets and rule-of-thirds grid"/><br/><sub><b>Non-destructive crop</b> — presets, exact size, thirds grid</sub></td>
+</tr>
+</table>
+
+<p align="center"><img src="docs/assets/settings.png" width="560" alt="Sitch settings: configurable screenshot hotkey, export format and after-capture actions"/><br/><sub><b>Settings</b> — every capture hotkey is configurable</sub></p>
+
 ## Requirements
 
-**Windows**
-- Windows 10 1903+ or Windows 11 (x64)
-- No runtime, no installer, no admin rights required
+**Windows** — Windows 10 1903+ or Windows 11 (x64). No runtime, no installer, no admin rights.
 
-**Mac**
-- macOS 15 Sequoia or later
-- Apple Silicon or Intel
-- Screen Recording permission (requested on first launch)
+**Mac** — macOS 15 Sequoia or later, Apple Silicon or Intel. Screen Recording permission
+(requested on first launch).
 
 ## Building from source
 
@@ -206,50 +250,32 @@ swift test                 # core unit tests
 - Mac: a region capture stays on the display where the drag started
 - HDR displays are captured in SDR (tone-mapped capture is on the roadmap)
 
-## Architecture notes
+## How it works
 
-Two native apps in one repo, built to the same spec and released together: WPF on .NET 10 for
+Two native apps in one repo, built to one spec and released together: WPF on .NET 10 for
 Windows (`windows/`), Swift and AppKit with ScreenCaptureKit for the Mac (`mac/`). Both use
 freeze-frame capture with one overlay window per display, in a physical-pixel coordinate space
 — the approach that avoids the classic mixed-DPI capture bugs. The pristine capture is
-immutable: every annotation, including blur/pixelate, is a vector object rendered
+immutable: every annotation, including blur and pixelate, is a vector object rendered
 non-destructively and flattened only at export, with effects applied before shapes so
-redactions never smear your arrows. Clean-room implementation; architecture lessons drawn from
-studying the classic Skitch, its modern macOS remake [iSkitch](https://iskitch.com), and the
-open-source annotation-tool ecosystem.
+redactions never smear your arrows. Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
-## Screenshots
+Clean-room implementation; design lessons drawn from the classic Skitch, its modern macOS
+remake [iSkitch](https://iskitch.com), and the open-source annotation-tool ecosystem.
 
-*The editor — dark theme, with the signature tapered arrow, highlighter, pixelate redaction and
-a numbered-workflow stamp:*
+## Contributing
 
-![Sitch screenshot editor in dark mode — Skitch-style tapered arrow, highlighter and pixelate redaction on Windows](docs/assets/editor-dark.png)
-
-*On the Mac — the same editor, native to macOS:*
-
-![Sitch screenshot annotation editor on macOS — Skitch-style tapered arrow and pixelate redaction](docs/assets/editor-mac.png)
-
-*Region capture — frozen-screen picker with dimming and a live pixel-size readout:*
-
-![Region capture overlay — select any screen region to screenshot and annotate](docs/assets/region-capture.png)
-
-*Non-destructive crop with aspect-ratio presets, proportional lock and rule-of-thirds grid:*
-
-![Crop mode with exact width and height fields and rule-of-thirds grid](docs/assets/crop-mode.png)
-
-*Light theme:*
-
-![Sitch screenshot annotation editor in light mode on Windows 11](docs/assets/editor-light.png)
-
-*Settings — the capture hotkey is fully configurable:*
-
-![Sitch settings — configurable screenshot hotkey, formats and after-capture actions](docs/assets/settings.png)
+Bug reports and feature requests are welcome in
+[Issues](https://github.com/phalladar/sitch/issues). If Sitch is useful to you, the most
+helpful things you can do are ⭐ **star the repo** and tell the next person who asks
+*"what replaced Skitch?"*
 
 ---
 
 <div align="center">
 
-**Sitch** — screenshot annotation for Windows and Mac: capture, annotate & share.
-A free, open-source Skitch replacement. MIT © 2026 Josh Auriemma
+**Sitch** — free, open-source screenshot annotation for Windows and Mac.
+The Skitch replacement: capture, annotate, share. Formerly WinSitch.
+MIT © 2026 Josh Auriemma
 
 </div>
